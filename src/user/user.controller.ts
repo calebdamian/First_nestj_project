@@ -18,7 +18,7 @@ export class UserController {
         //debemos llamar a nuestra instancia del Servicio
         const user = await this.userService.createUser(createUserDTO);
         return res.status(HttpStatus.OK).json({
-            message: 'received',
+            message: 'OK',
             user: user
         });
     }
