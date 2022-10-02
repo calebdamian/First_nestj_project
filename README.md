@@ -3,7 +3,7 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-Users API REST developed with NestJs, connection to MongoDb
+API REST developed with NestJs, connection to MongoDb
 
 ## Installation
 
