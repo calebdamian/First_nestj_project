@@ -7,20 +7,25 @@ import { CreateUserDTO } from './dto/user.dto';
 //maneja rutas del servidor
 
 import { UsersService } from './user.service';
-@Controller('user')
+
+@Controller('user') //se declara la ruta global de user para no tener que declararla en cada metodo
 export class UserController {
 
     constructor(private userService: UsersService) {
 
     }
     //createUserDTO se transfiere a través de la app cliente
+    //el nombre del metodo puede ser cualquiera, Nest no lo limita
     @Post('/create')
+    //el parametro Res corresponde a un objeto de la libreria Express
+    //al declarar el objeto de tipo Res estamos diciendo a Nest que usaremos Express
+    //por lo que no procesara el objeto de manera 'nativa'
     async createPost(@Res() res, @Body() createUserDTO: CreateUserDTO) {
         //console.log(createUserDTO);
         //debemos llamar a nuestra instancia del Servicio
         const user = await this.userService.createUser(createUserDTO);
         return res.status(HttpStatus.OK).json({
-            message: 'User Successfully Created',
+            message: 'User successfully created',
             user
         });
     }
@@ -30,7 +35,7 @@ export class UserController {
         const users = await this.userService.getUsers();
         res.status(HttpStatus.OK).json({
             users
-        })
+        });
     }
 
     //aqui le decimos que requerimos el parámetro del Id del user, y que la ruta tendrá el Id del usuario 
@@ -48,7 +53,7 @@ export class UserController {
         return res.status(HttpStatus.OK).json({
             message: 'User deleted successfully',
             userDeleted
-        })
+        });
     }
 
     @Put('/update/:userId')
@@ -58,6 +63,6 @@ export class UserController {
         return res.status(HttpStatus.OK).json({
             message: 'User updated successfully',
             updatedUser
-        })
+        });
     }
 }

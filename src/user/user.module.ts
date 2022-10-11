@@ -9,7 +9,7 @@ import { UserSchema } from './schemas/user.schema';
   imports: [
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema }
-    ]) //esta es la definición del modelo USER
+    ]) //esta es la definición del modelo USER con el uso de Mongoose
   ],
   controllers: [UserController],
   providers: [UsersService]

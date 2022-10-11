@@ -4,6 +4,14 @@ import { InjectModel } from '@nestjs/mongoose'
 import { User } from './interfaces/user.interface';
 import { CreateUserDTO } from './dto/user.dto';
 
+
+//tiene el decorador Injectable, por lo que se considera un Pipe
+
+/*Pipes have two typical use cases:
+transformation: transform input data to the desired form (e.g., from string to integer)
+validation: evaluate input data and if valid, 
+simply pass it through unchanged; otherwise, 
+throw an exception when the data is incorrect */
 @Injectable()
 export class UsersService {
     //el servicio define los métodos
