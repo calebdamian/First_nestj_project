@@ -41,7 +41,7 @@ export class UserController {
     //aqui le decimos que requerimos el parámetro del Id del user, y que la ruta tendrá el Id del usuario 
     @Get('/:userId')
     async getUser(@Res() res, @Param('userId') userId) {
-        const user = await this.userService.getUser(userId);
+        const user = await this.userService.getUserById(userId);
         if (!user) throw new NotFoundException('User does not exist!'); //por si no existe
         return res.status(HttpStatus.OK).json(user); //retornamos el objeto entero
     }

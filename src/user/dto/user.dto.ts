@@ -2,8 +2,10 @@
 // valida los datos
 // 
 // FIXME: Validar con ValidationPipes
+// TODO: Agregar username?
 export class CreateUserDTO {
     readonly name: string;
+    readonly username: string;
     readonly password: string;
     readonly email: string;
     readonly imageURL: string;

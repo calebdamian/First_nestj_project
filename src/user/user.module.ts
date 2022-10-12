@@ -12,6 +12,7 @@ import { UserSchema } from './schemas/user.schema';
     ]) //esta es la definición del modelo USER con el uso de Mongoose
   ],
   controllers: [UserController],
-  providers: [UsersService]
+  providers: [UsersService],
+  exports: [UsersService] //permite utilizar el servicio en otro modulo
 })
 export class UsersModule { }

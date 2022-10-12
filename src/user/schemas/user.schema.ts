@@ -6,6 +6,7 @@ import { Schema } from 'mongoose'
 //no permite trabjar ya que requiere MODELO para eso, es decir por si solo no funciona como un objeto
 export const UserSchema = new Schema({
     name: { type: String, require: true },
+    username: { type: String, require: true },
     password: { type: String, require: true },
     email: { type: String, require: true },
     imageURL: { type: String, require: false },

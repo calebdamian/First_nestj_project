@@ -4,6 +4,7 @@ import { Document } from "mongoose";
 //herencia de la clase Document para definir los documentos de Mongo
 export interface User extends Document {
     readonly name: string;
+    readonly username: string;
     readonly password: string;
     readonly email: string;
     readonly imageURL: string;
