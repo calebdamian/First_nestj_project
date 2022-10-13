@@ -1,11 +1,8 @@
 // esta clase define las propiedades que deben venir desde la app cliente
 // valida los datos
-// 
-// FIXME: Validar con ValidationPipes
-// TODO:  agregar un login.user.dto 
 
-import { IsString } from "class-validator";
-import { IsEmail, IsNotEmpty, MaxLength } from "class-validator/types/decorator/decorators";
+import { IsString, IsEmail, IsNotEmpty, MaxLength } from "class-validator";
+
 
 export class CreateUserDTO {
 
