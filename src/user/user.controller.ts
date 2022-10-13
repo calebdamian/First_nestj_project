@@ -9,7 +9,7 @@ import { CreateUserDTO } from './dto/user.dto';
 
 import { UsersService } from './user.service';
 
-@Controller('user/auth') //se declara la ruta global de user para no tener que declararla en cada metodo
+@Controller('auth/user') //se declara la ruta global de user para no tener que declararla en cada metodo
 @UseGuards(AuthenticatedGuard) //este controlador usara la verificacion de la sesion 
 export class UserController {
 
