@@ -9,7 +9,7 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     login(@Body() loggedInUserDTO: LoggedInUserDTO) {
-        return this.authService.validateUser(loggedInUserDTO);
+        return this.authService.login(loggedInUserDTO);
     }
 
 }
