@@ -35,11 +35,7 @@ export class AuthService {
             pass_ok = true;
         }
 
-        if (!pass_ok) return new UnauthorizedException('Password dont match');
-
-
-
-
+        if (!pass_ok) return new UnauthorizedException('Passwords dont match');
 
     }
 }
