@@ -23,7 +23,7 @@ export class UserController {
     //al declarar el objeto de tipo Res estamos diciendo a Nest que usaremos Express
     //por lo que no procesara el objeto de manera 'nativa'
 
-
+    //FIXME: encriptar contrasenia
     async createPost(@Res() res, @Body() createUserDTO: CreateUserDTO) {
         //console.log(createUserDTO);
         //debemos llamar a nuestra instancia del Servicio
