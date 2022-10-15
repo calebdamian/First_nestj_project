@@ -1,7 +1,6 @@
 import { Controller, Delete, Get, HttpStatus, Post, Put, Res, Body, NotFoundException, UseGuards } from '@nestjs/common';
-import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
-import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
-
+import { Param, Req } from '@nestjs/common/decorators/http/route-params.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
 //importar la clase DTO necesaria para establecer las propiedades que recibimos del cliente
 import { CreateUserDTO } from './dto/user.dto';
@@ -9,8 +8,10 @@ import { CreateUserDTO } from './dto/user.dto';
 
 import { UsersService } from './user.service';
 
-@Controller('user/auth') //se declara la ruta global de user para no tener que declararla en cada metodo
-@UseGuards(AuthenticatedGuard) //este controlador usara la verificacion de la sesion 
+@UseGuards(JwtAuthGuard)
+@Controller('auth/user') //se declara la ruta global de user para no tener que declararla en cada metodo
+//COMMENT: se puede establecer un decorador personalizado para determinar aquellas rutas
+// que deberian ser publicas, es decir que no requeriran autenticacion
 export class UserController {
 
     constructor(private userService: UsersService) {
@@ -22,8 +23,6 @@ export class UserController {
     //el parametro Res corresponde a un objeto de la libreria Express
     //al declarar el objeto de tipo Res estamos diciendo a Nest que usaremos Express
     //por lo que no procesara el objeto de manera 'nativa'
-
-
     async createPost(@Res() res, @Body() createUserDTO: CreateUserDTO) {
         //console.log(createUserDTO);
         //debemos llamar a nuestra instancia del Servicio

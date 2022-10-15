@@ -1,46 +1,37 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { stringify } from 'querystring';
-import { LoggedInUserDTO } from 'src/user/dto/logged.user.dto';
-import { IUser } from 'src/user/interfaces/user.interface';
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { from, Observable } from 'rxjs';
 import { UsersService } from 'src/user/user.service';
+const bcrypt = require('bcrypt');
 @Injectable()
-
 //clase encargada de obtener y verificar el username / password del usuario
 export class AuthService {
-    constructor(private userService: UsersService) {
+    constructor(private userService: UsersService,
+        private jwtService: JwtService) {
 
     }
 
     //el siguiente metodo permite realizar la validacion con Passport
     async validateUser(username: string, password: string): Promise<any> {
-        const validUser = this.userService.findByUsername(username);
+        const validUser = await this.userService.findByUsername(username);
 
         if (validUser && (await validUser).password === password) {
-            //const { password, username, ...rest } = validUser;
-            return validUser;
+            const { password, ...result } = validUser;
+            return result;
         }
 
         return null;
     }
 
-    async login(loggedInUserDTO: LoggedInUserDTO): Promise<any> {
-        const username = loggedInUserDTO.username;
-
-        const found_user = await this.userService.findByUsername(username);
-
-        if (!found_user) return new UnauthorizedException('User does not exist');
-
-        var pass_ok = false;
-        if (loggedInUserDTO.password == found_user.password) {
-            pass_ok = true;
-        }
-
-        if (!pass_ok) return new UnauthorizedException('Password dont match');
-
-
-
-
-
+    async login(user: any) {
+        const payload = { username: user.username, sub: user._id }
+        return {
+            access_token: this.jwtService.sign(payload), //genera el jwt de las propiedades del usuario
+        };
     }
+
+    /**hashPassword(password: string): Observable<string> {
+        return from<string>(bcrypt.hash(password, 12));
+    }**/
 }
 

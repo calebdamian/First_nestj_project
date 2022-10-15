@@ -1,29 +1,22 @@
 //maneja TODAS las peticiones que ingresan al server
 import { Controller, Get, Post, UseGuards, Request } from '@nestjs/common';
-import { AppService } from './app.service';
-import { AuthenticatedGuard } from './auth/authenticated.guard';
-import { LocalAuthGuard } from './auth/local.auth.guard';
+import { AuthService } from './auth/auth.service';
+import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
+import { LocalAuthGuard } from './auth/guards/local.auth.guard';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
-
-
-
+  constructor(private readonly authService: AuthService) { }
   //cuando se quiere realizar el login, ingresa primero al Guard
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   login(@Request() req): any {
-    return { msg: 'Logged in succesfully' };
+    console.log(req.user);
+    return this.authService.login(req.user); //al logear devuelve el jwt
   }
-
-  @UseGuards(AuthenticatedGuard)
-  @Get('/auth/protected')
-  getHello(@Request() req): string {
+  //ruta para ver el usuario actual
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
     return req.user;
   }
-
-
-
-
-
 }
