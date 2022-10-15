@@ -12,31 +12,34 @@ export class AuthService {
     }
 
     //el siguiente metodo permite realizar la validacion con Passport
-    async validateUser(username: string, password: string): Promise<any> {
-        const validUser = this.userService.findByUsername(username);
+    async validateUser(loggedInUserDTO: LoggedInUserDTO): Promise<any> {
 
-        if (validUser && (await validUser).password === password) {
+        const validUser = this.userService.findByUsername(loggedInUserDTO.username);
+        console.log(loggedInUserDTO);
+        console.log(validUser);
+        if (validUser && (await validUser).password === loggedInUserDTO.password) {
             //const { password, username, ...rest } = validUser;
+            console.log(validUser);
             return validUser;
         }
 
         return null;
     }
 
-    async login(loggedInUserDTO: LoggedInUserDTO): Promise<any> {
-        const username = loggedInUserDTO.username;
-
-        const found_user = await this.userService.findByUsername(username);
-
-        if (!found_user) return new UnauthorizedException('User does not exist');
-
-        var pass_ok = false;
-        if (loggedInUserDTO.password == found_user.password) {
-            pass_ok = true;
-        }
-
-        if (!pass_ok) return new UnauthorizedException('Passwords dont match');
-
-    }
+    /* async login(loggedInUserDTO: LoggedInUserDTO): Promise<any> {
+         const username = loggedInUserDTO.username;
+ 
+         const found_user = await this.userService.findByUsername(username);
+ 
+         if (!found_user) return new UnauthorizedException('User does not exist');
+ 
+         var pass_ok = false;
+         if (loggedInUserDTO.password == found_user.password) {
+             pass_ok = true;
+         }
+ 
+         if (!pass_ok) return new UnauthorizedException('Passwords dont match');
+ 
+     }*/
 }
 

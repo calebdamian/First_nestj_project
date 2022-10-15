@@ -11,6 +11,7 @@ export class LocalAuthGuard extends AuthGuard('local') { //le decimos que estamo
         const request = context.switchToHttp().getRequest();
 
         await super.logIn(request); //crea la sesion 
+        console.log(result);
         return result;
     }
 }

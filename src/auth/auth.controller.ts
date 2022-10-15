@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Res, HttpStatus } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoggedInUserDTO } from "src/user/dto/logged.user.dto";
 import { LocalAuthGuard } from './local.auth.guard';
@@ -8,8 +8,14 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    login(@Body() loggedInUserDTO: LoggedInUserDTO) {
-        return this.authService.login(loggedInUserDTO);
+    login(@Res() res, @Body() loggedInUserDTO: LoggedInUserDTO) {
+        const user = this.authService.validateUser(loggedInUserDTO);
+        console.log(user);
+        return res.status(HttpStatus.OK).json({
+            message: 'User logged in succesfully',
+            user
+        });
+
     }
 
 }
