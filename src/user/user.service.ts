@@ -32,7 +32,7 @@ export class UsersService {
         return foundUser;
     }
 
-    async findByUsername(username: string): Promise<IUser> {
+    async findByUsername(username: string) {
         const foundUser = await this.userModel.findOne({ username });
         return foundUser;
     }

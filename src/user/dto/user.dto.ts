@@ -12,7 +12,7 @@ export class CreateUserDTO {
     @IsNotEmpty({ message: 'Username cannot be empty.' })
     readonly username: string;
     @IsNotEmpty({ message: 'Password cannot be empty.' })
-    readonly password: string;
+    password: string;
     @IsEmail()
     readonly email: string;
     @IsString()
