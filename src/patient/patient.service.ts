@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './interfaces/user.interface';
-import { CreateUserDTO } from './dto/user.dto';
+
+import { CreatePatientDto } from './dto/create-patient.dto';
 
 @Injectable()
-export class UsersService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+export class PatientService {
+  /*  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async getUsers(): Promise<User[]> {
     const users = await this.userModel.find();
@@ -23,7 +23,7 @@ export class UsersService {
     return foundUser;
   }
 
-  async createUser(createUserDTO: CreateUserDTO): Promise<User> {
+  async createUser(createUserDTO: CreatePatientDto): Promise<User> {
     const createdUser = new this.userModel(createUserDTO);
     return await createdUser.save();
   }
@@ -35,7 +35,7 @@ export class UsersService {
 
   async updateUser(
     userId: string,
-    createUserDTO: CreateUserDTO,
+    createUserDTO: CreatePatientDto,
   ): Promise<User> {
     const updatedUser = await this.userModel.findByIdAndUpdate(
       userId,
@@ -43,5 +43,5 @@ export class UsersService {
       { new: true },
     );
     return updatedUser;
-  }
+  }*/
 }

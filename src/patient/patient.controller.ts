@@ -16,17 +16,17 @@ import {
 } from '@nestjs/common/decorators/http/route-params.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
-import { CreateUserDTO } from './dto/user.dto';
+import { CreatePatientDto } from './dto/create-patient.dto';
 
-import { UsersService } from './user.service';
+import { PatientService } from './patient.service';
 
 @UseGuards(JwtAuthGuard)
-@Controller('auth/user')
-export class UserController {
-  constructor(private userService: UsersService) {}
-  @Post('/create')
-  async createPost(@Res() res, @Body() createUserDTO: CreateUserDTO) {
-    const user = await this.userService.createUser(createUserDTO);
+@Controller('/paciente')
+export class PatientController {
+  constructor(private userService: PatientService) {}
+  /*@Post('/create')
+  async createPost(@Res() res, @Body() createPatientDto: CreatePatientDto) {
+    const user = await this.userService.createUser(createPatientDto);
     return res.status(HttpStatus.OK).json({
       message: 'User successfully created',
       user,
@@ -61,7 +61,7 @@ export class UserController {
   @Put('/update/:userId')
   async updateUser(
     @Res() res,
-    @Body() createUserDTO: CreateUserDTO,
+    @Body() createUserDTO: CreatePatientDto,
     @Param('userId') userId,
   ) {
     const updatedUser = await this.userService.updateUser(
@@ -73,5 +73,5 @@ export class UserController {
       message: 'User updated successfully',
       updatedUser,
     });
-  }
+  }*/
 }
