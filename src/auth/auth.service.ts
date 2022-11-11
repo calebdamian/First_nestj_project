@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { from, Observable } from 'rxjs';
 import { UsersService } from 'src/user/user.service';
-const bcrypt = require('bcrypt');
 @Injectable()
 //clase encargada de obtener y verificar el username / password del usuario
 export class AuthService {
