@@ -6,32 +6,49 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
+import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
+import { AdminService } from 'src/admin/admin.service';
+import { PatientService } from 'src/patient/patient.service';
 import { ClHistService } from './cl_hist.service';
 import { CreateClHistDto } from './dto/create-cl_hist.dto';
 import { UpdateClHistDto } from './dto/update-cl_hist.dto';
 
-@Controller('cl-hist')
+@Controller('histclinicas')
 export class ClHistController {
-  constructor(private readonly clHistService: ClHistService) {}
+  constructor(
+    private readonly clHistService: ClHistService,
+    private adminService: AdminService,
+  ) {}
 
-  @Post()
-  create(@Body() createClHistDto: CreateClHistDto) {
-    return this.clHistService.create(createClHistDto);
+  @Post(':id')
+  async create(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createClHistDto: CreateClHistDto,
+  ) {
+    return this.clHistService.createClHist(id, createClHistDto);
   }
 
   @Get()
-  findAll() {
-    return this.clHistService.findAll();
+  async findAllClHistories(@Res() res) {
+    const clinicalHistories = await this.clHistService.findAll();
+    res.status(HttpStatus.OK).json({
+      clinicalHistories,
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOneClHistory(@Param('id') id: string) {
     return this.clHistService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClHistDto: UpdateClHistDto) {
+  updateClHistory(
+    @Param('id') id: string,
+    @Body() updateClHistDto: UpdateClHistDto,
+  ) {
     return this.clHistService.update(+id, updateClHistDto);
   }
 }

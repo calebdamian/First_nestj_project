@@ -1,12 +1,11 @@
 import { Admin } from 'src/admin/entity/admin.entity';
-import { ClHist } from 'src/cl_hist/entity/cl_hist.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'paciente' })
@@ -39,13 +38,13 @@ export class Patient {
   @ManyToOne(() => Admin, (admin) => admin.pacientes)
   admin: Admin;
 
-  @OneToOne(() => ClHist)
+  /*@OneToOne(() => ClHist, (historia_clinica) => historia_clinica.paciente)
   @JoinColumn()
-  h_clinica: ClHist;
+  h_clinica: ClHist;*/
 
-  @Column()
-  adminId: number;
+  @CreateDateColumn()
+  fecha_creacion: any;
 
-  @Column({ nullable: true })
-  hClinicaId: number;
+  @UpdateDateColumn()
+  fecha_modificacion: any;
 }

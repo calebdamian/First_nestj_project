@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsString,
   IsOptional,
+  IsNotEmpty,
 } from 'class-validator';
 
 export class CreatePatientDto {
@@ -19,9 +20,7 @@ export class CreatePatientDto {
   num_contacto: string;
   @IsString()
   num_id: string;
+  /* @IsOptional()
   @IsNumber()
-  adminId: number;
-  @IsOptional()
-  @IsNumber()
-  hClinicaId: number;
+  hClinicaId: number;*/
 }

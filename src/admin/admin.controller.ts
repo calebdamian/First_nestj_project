@@ -29,8 +29,8 @@ export class AdminController {
     return this.adminService.findAll();
   }
 
-  @Get()
-  findByUsername(nombre_usuario: string) {
+  @Get(':nombre_usuario')
+  findByUsername(@Param('nombre_usuario') nombre_usuario: string) {
     return this.adminService.findByUsername(nombre_usuario);
   }
 

@@ -23,9 +23,7 @@ export class AdminService {
   }
 
   findAll(): Promise<Admin[]> {
-    return this.adminRepository.find({
-      relations: ['pacientes'],
-    });
+    return this.adminRepository.find();
   }
 
   async findByUsername(nombre_usuario: string) {
@@ -42,12 +40,7 @@ export class AdminService {
   async findById(id: number) {
     const adminFound = await this.adminRepository.findOne({
       where: { id },
-      relations: ['pacientes'],
     });
-
-    if (!adminFound) {
-      return new HttpException('Admin not found', HttpStatus.NOT_FOUND);
-    }
     return adminFound;
   }
 

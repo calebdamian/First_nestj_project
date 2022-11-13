@@ -2,12 +2,12 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  BeforeInsert,
   OneToMany,
   CreateDateColumn,
+  BaseEntity,
 } from 'typeorm';
-import { hashSync, genSaltSync } from 'bcrypt';
 import { Patient } from 'src/patient/entity/patient.entity';
+import { ClHist } from 'src/cl_hist/entity/cl_hist.entity';
 
 @Entity({ name: 'administrador' })
 export class Admin {
@@ -36,6 +36,15 @@ export class Admin {
   @CreateDateColumn()
   fecha_creacion: any;
 
-  @OneToMany(() => Patient, (paciente) => paciente.admin)
+  @OneToMany(() => Patient, (paciente) => paciente.admin, {
+    eager: true,
+    cascade: true,
+  })
   pacientes: Patient[];
+
+  @OneToMany(() => ClHist, (historia_clinica) => historia_clinica.admin, {
+    eager: true,
+    cascade: true,
+  })
+  historias_clinicas: ClHist[];
 }

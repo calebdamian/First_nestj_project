@@ -1,6 +1,11 @@
-import { IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateClHistDto {
+  /*@IsNotEmpty()
   @IsNumber()
-  pacienteId: number;
+  adminId: number;
+  @IsNumber()
+  pacienteId: number;*/
+  @IsString()
+  descripcion: string;
 }
