@@ -20,7 +20,7 @@ export class Patient {
   @Column({})
   apellidos: string;
 
-  @Column()
+  @Column({ type: 'date' })
   fecha_nac: Date;
 
   @Column('varchar', { length: 10 })
@@ -42,4 +42,10 @@ export class Patient {
   @OneToOne(() => ClHist)
   @JoinColumn()
   h_clinica: ClHist;
+
+  @Column()
+  adminId: number;
+
+  @Column({ nullable: true })
+  hClinicaId: number;
 }

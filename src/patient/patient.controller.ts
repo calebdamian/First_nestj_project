@@ -10,44 +10,53 @@ import {
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
+import { UseInterceptors, UsePipes } from '@nestjs/common/decorators';
 import {
   Param,
   Req,
 } from '@nestjs/common/decorators/http/route-params.decorator';
+import { ValidationPipe } from '@nestjs/common/pipes';
+import { ClassSerializerInterceptor } from '@nestjs/common/serializer';
+import { AdminService } from 'src/admin/admin.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
 import { CreatePatientDto } from './dto/create-patient.dto';
 
 import { PatientService } from './patient.service';
 
-@UseGuards(JwtAuthGuard)
-@Controller('/paciente')
+//@UseGuards(JwtAuthGuard)
+@Controller('paciente')
 export class PatientController {
-  constructor(private userService: PatientService) {}
-  /*@Post('/create')
-  async createPost(@Res() res, @Body() createPatientDto: CreatePatientDto) {
-    const user = await this.userService.createUser(createPatientDto);
+  constructor(private patientService: PatientService) {}
+  @Post()
+  public async create(@Res() res, @Body() createPatientDto: CreatePatientDto) {
+    const patient = await this.patientService.create(createPatientDto);
     return res.status(HttpStatus.OK).json({
-      message: 'User successfully created',
-      user,
+      message: 'Patient created successfully',
+      patient,
     });
   }
 
   @Get()
-  async getUsers(@Res() res) {
-    const users = await this.userService.getUsers();
+  async findAll(@Res() res) {
+    const patients = await this.patientService.findAll();
     res.status(HttpStatus.OK).json({
-      users,
+      patients,
     });
   }
 
-  @Get('/:userId')
-  async getUser(@Res() res, @Param('userId') userId) {
-    const user = await this.userService.getUserById(userId);
-    if (!user) throw new NotFoundException('User does not exist!');
-    return res.status(HttpStatus.OK).json(user);
+  @Get('/:numId')
+  async getUser(@Res() res, @Param('num_id') num_id) {
+    const patient = await this.patientService.findOneByNumId(num_id);
+    return res.status(HttpStatus.OK).json({ patient });
   }
 
+  @Get('/:id')
+  async get(@Res() res, @Param('id') id) {
+    const patient = await this.patientService.findOne(id);
+    return res.status(HttpStatus.OK).json({ patient });
+  }
+  /*
   @Delete('/delete/:userId')
   async deleteUser(@Res() res, @Param('userId') userId) {
     const userDeleted = await this.userService.deleteUser(userId);

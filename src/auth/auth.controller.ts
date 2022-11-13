@@ -1,21 +1,15 @@
-/*import { Controller, Get, Post, Body, UseGuards } from "@nestjs/common";
-import { AuthService } from "./auth.service";
-import { LoggedInUserDTO } from "src/user/dto/logged.user.dto";
-import { LocalAuthGuard } from './local.auth.guard';
+import { Controller } from '@nestjs/common';
+import { Admin } from 'src/admin/entity/admin.entity';
+import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
-    @UseGuards(LocalAuthGuard)
-    @Post('/login')
-    login(@Res() res, @Body() loggedInUserDTO: LoggedInUserDTO) {
-        const user = this.authService.validateUser(loggedInUserDTO);
-        console.log(user);
-        return res.status(HttpStatus.OK).json({
-            message: 'User logged in succesfully',
-            user
-        });
+  validateUser(username: string, password: string) {
+    return this.authService.validateUser(username, password);
+  }
 
-    }
-
-}*/
+  login(user: Admin) {
+    return this.authService.login(user);
+  }
+}

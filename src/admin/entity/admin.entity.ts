@@ -4,6 +4,7 @@ import {
   Column,
   BeforeInsert,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm';
 import { hashSync, genSaltSync } from 'bcrypt';
 import { Patient } from 'src/patient/entity/patient.entity';
@@ -32,17 +33,9 @@ export class Admin {
   })
   email: string;
 
-  @Column({
-    type: 'datetime',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn()
   fecha_creacion: any;
 
-  @OneToMany(() => Patient, (pacientes) => pacientes.admin)
+  @OneToMany(() => Patient, (paciente) => paciente.admin)
   pacientes: Patient[];
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await hashSync(this.password, genSaltSync(10));
-  }
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne, Column } from 'typeorm';
 import { Patient } from 'src/patient/entity/patient.entity';
 @Entity({ name: 'historia_clinica' })
 export class ClHist {
@@ -7,4 +7,7 @@ export class ClHist {
 
   @OneToOne(() => Patient)
   paciente: Patient;
+
+  @Column()
+  pacienteId: number;
 }

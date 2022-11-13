@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Admin } from 'src/admin/entity/admin.entity';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { AdminService } from 'src/admin/admin.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: AdminService,
+    @InjectRepository(Admin) private adminRepository: Repository<Admin>,
     private jwtService: JwtService,
   ) {}
 
@@ -19,8 +22,8 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user._id };
+  async login(user: Admin) {
+    const payload = { username: user.nombre_usuario, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
