@@ -13,7 +13,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
   app.enableCors();
   app.use(passport.initialize());
   const port = parseInt(process.env.SERVER_PORT);

@@ -18,7 +18,7 @@ import { CreateClHistDto } from './dto/create-cl_hist.dto';
 import { UpdateClHistDto } from './dto/update-cl_hist.dto';
 
 @Controller('histclinicas')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 export class ClHistController {
   constructor(
     private readonly clHistService: ClHistService,

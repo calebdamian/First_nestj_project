@@ -21,11 +21,11 @@ import { CreatePatientDto } from './dto/create-patient.dto';
 
 import { PatientService } from './patient.service';
 
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('pacientes')
 export class PatientController {
   constructor(private patientService: PatientService) {}
-  @Post(':id')
+  @Post('crear/:id')
   public async create(
     @Param('id', ParseIntPipe) id: number,
     @Body() createPatientDto: CreatePatientDto,
@@ -33,7 +33,7 @@ export class PatientController {
     return this.patientService.createPatient(id, createPatientDto);
   }
 
-  @Get()
+  @Get('ver/todos')
   async findAllPatients(@Res() res) {
     const patients = await this.patientService.findAll();
     res.status(HttpStatus.OK).json({
@@ -41,19 +41,19 @@ export class PatientController {
     });
   }
 
-  @Get(':numId')
+  @Get('ver/numced/:numId')
   async getPatientByNumId(@Res() res, @Param('num_id') num_id) {
     const patient = await this.patientService.findOneByNumId(num_id);
     return res.status(HttpStatus.OK).json({ patient });
   }
 
-  @Get(':id')
+  @Get('ver/id/:id')
   async getPatientById(@Res() res, @Param('id') id) {
     const patient = await this.patientService.findOne(id);
     return res.status(HttpStatus.OK).json({ patient });
   }
 
-  @Delete(':id')
+  @Delete('eliminar/:id')
   async deletePatient(@Res() res, @Param('id') id) {
     const userDeleted = await this.patientService.delete(id);
     if (!userDeleted) throw new NotFoundException('User does not exist!');
@@ -63,7 +63,7 @@ export class PatientController {
     });
   }
 
-  @Put(':id')
+  @Put('editar/:id')
   async updateUser(
     @Res() res,
     @Body() createUserDTO: CreatePatientDto,
