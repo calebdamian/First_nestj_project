@@ -17,13 +17,13 @@ export class PatientEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 50 })
   first_name: string;
 
-  @Column()
+  @Column({ length: 50 })
   middle_name: string;
 
-  @Column()
+  @Column({ length: 50 })
   last_name: string;
 
   @Column({
@@ -31,7 +31,6 @@ export class PatientEntity {
   })
   id_card: string;
 
-  // TODO: Relation with  MedicalRecord, PatientProfile
   @ManyToOne(() => AdministratorEntity, (admin) => admin.patients)
   admin: AdministratorEntity;
 
@@ -42,7 +41,4 @@ export class PatientEntity {
   @OneToOne(() => PatientProfileEntity)
   @JoinColumn()
   patient_profile: PatientProfileEntity;
-  /*@OneToOne(() => ClHist, (historia_clinica) => historia_clinica.paciente)
-  @JoinColumn()
-  h_clinica: ClHist;*/
 }

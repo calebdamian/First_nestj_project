@@ -1,14 +1,16 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { AdministratorEntity } from './admin.entity';
+import { IsEmail, IsString } from 'class-validator';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('administrator_profile')
 export class Administrator_ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @IsString()
+  @Column({ length: 50 })
   full_name: string;
 
-  @Column()
+  @IsEmail()
+  @Column({ length: 50 })
   email: string;
 }
