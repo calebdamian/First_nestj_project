@@ -9,12 +9,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(
-    nombre_usuario: string,
-    password: string,
-  ): Promise<boolean> {
+  async validateUser(nombre_usuario: string, password: string): Promise<any> {
     const user = await this.adminService.findByUsername(nombre_usuario);
-    return await user.validatePassword(password);
+
+    if (user && (await user.validatePassword(password))) {
+      const { password, ...result } = user;
+      return result;
+    }
+
+    return null;
   }
 
   /*async signup(admin: Admin): Promise<Admin> {
@@ -65,10 +68,17 @@ export class AuthService {
   decodeToken(token): any {
     return this.jwtService.decode(token);
   }*/
-  async generateAccessToken(name: string) {
+  /* async generateAccessToken(name: string) {
     const user = await this.adminService.findByUsername(name);
     const payload: JWTPayload = { id: user.id };
     console.log(payload);
+    return {
+      access_token: this.jwtService.sign({ payload }),
+    };
+  }*/
+  async loginWithCredentials(user: any) {
+    const payload = { nombre_usuario: user.nombre_usuario, sub: user.id };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

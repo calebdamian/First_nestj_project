@@ -15,7 +15,6 @@ import { AuthController } from './auth.controller';
       secret: 'process.env.JWT_SECRET',
       signOptions: { expiresIn: '120s' },
     }),
-    TypeOrmModule.forFeature([Admin]),
     AdminModule,
   ],
   controllers: [AuthController],
