@@ -1,38 +1,74 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Admin } from 'src/admin/entity/admin.entity';
-import * as bcrypt from 'bcrypt';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AdminService } from 'src/admin/admin.service';
+import { JWTPayload } from './jwt.payload';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Admin) private adminRepository: Repository<Admin>,
+    private adminService: AdminService,
     private jwtService: JwtService,
   ) {}
-  async signup(admin: Admin): Promise<Admin> {
+
+  async validateUser(
+    nombre_usuario: string,
+    password: string,
+  ): Promise<boolean> {
+    const user = await this.adminService.findByUsername(nombre_usuario);
+    return await user.validatePassword(password);
+  }
+
+  /*async signup(admin: Admin): Promise<Admin> {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(admin.password, salt);
     admin.password = hash;
     return await this.adminRepository.save(admin);
-  }
-
-  async validateAdmin(nombre_usuario: string, password: string): Promise<any> {
-    const foundAdmin = await this.adminRepository.findOne({
-      where: { nombre_usuario: nombre_usuario },
-    });
-    if (foundAdmin) {
-      if (await bcrypt.compare(password, foundAdmin.password)) {
-        const { password, ...result } = foundAdmin;
-        return result;
-      }
-      return null;
+  }*/
+  /*const foundAdmin = await this.adminService.findByUsername(nombre_usuario);
+    console.log(foundAdmin);
+    console.log(await bcrypt.hash(password, 10));
+    if (
+      foundAdmin &&
+      bcrypt.compare(foundAdmin.password, await bcrypt.hash(password, 10))
+    ) {
+      const { password, ...result } = foundAdmin;
+      return result;
     }
-    return null;
+    return null;*/
+  /* async login(admin: any) {
+    console.log(admin.admin);
+    const payload = {
+      admin: {
+        id: admin.admin.id,
+        nombre_usuario: admin.admin.nombre_usuario,
+        nombres: admin.admin.nombres,
+        apellidos: admin.admin.apellidos,
+        fecha_creacion: admin.admin.fecha_creacion,
+        email: admin.admin.email,
+      },
+    };
+    console.log(payload);
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+  /*async register(data) {
+    console.log(data);
+    const salt = bcrypt.genSalt();
+    data.password = await bcrypt.hash(data.password, salt);
+    let response = await this.adminService.create(data);
+    if (response) {
+      const { password, ...result } = response;
+      return result;
+    }
   }
 
-  async login(admin: Admin) {
-    const payload = { nombre_usuario: admin.nombre_usuario, sub: admin.id };
+  decodeToken(token): any {
+    return this.jwtService.decode(token);
+  }*/
+  async generateAccessToken(name: string) {
+    const user = await this.adminService.findByUsername(name);
+    const payload: JWTPayload = { id: user.id };
+    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),
     };

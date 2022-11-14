@@ -9,8 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
   app.useGlobalPipes(
     new ValidationPipe({
-      forbidUnknownValues: true,
-      forbidNonWhitelisted: true,
+      whitelist: true,
       transform: true,
     }),
   );

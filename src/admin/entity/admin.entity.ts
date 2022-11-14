@@ -5,10 +5,11 @@ import {
   OneToMany,
   CreateDateColumn,
   BaseEntity,
+  BeforeInsert,
 } from 'typeorm';
 import { Patient } from 'src/patient/entity/patient.entity';
 import { ClHist } from 'src/cl_hist/entity/cl_hist.entity';
-
+import * as bcrypt from 'bcrypt';
 @Entity({ name: 'administrador' })
 export class Admin {
   @PrimaryGeneratedColumn()
@@ -47,4 +48,15 @@ export class Admin {
     cascade: true,
   })
   historias_clinicas: ClHist[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+
+  async validatePassword(password: string): Promise<boolean> {
+    const passwordMatch = await bcrypt.compare(password, this.password);
+    return passwordMatch;
+  }
 }

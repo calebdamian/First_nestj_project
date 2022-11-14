@@ -3,20 +3,22 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Res,
   HttpStatus,
+  Patch,
 } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
 import { AdminService } from 'src/admin/admin.service';
-import { PatientService } from 'src/patient/patient.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { ClHistService } from './cl_hist.service';
 import { CreateClHistDto } from './dto/create-cl_hist.dto';
 import { UpdateClHistDto } from './dto/update-cl_hist.dto';
 
 @Controller('histclinicas')
+@UseGuards(JwtAuthGuard)
 export class ClHistController {
   constructor(
     private readonly clHistService: ClHistService,
@@ -32,23 +34,50 @@ export class ClHistController {
   }
 
   @Get()
-  async findAllClHistories(@Res() res) {
+  async findAllClHistories() {
     const clinicalHistories = await this.clHistService.findAll();
-    res.status(HttpStatus.OK).json({
-      clinicalHistories,
-    });
+    return clinicalHistories;
   }
 
   @Get(':id')
-  findOneClHistory(@Param('id') id: string) {
-    return this.clHistService.findOne(+id);
+  async findOneClHistory(@Param('id') id: number, @Res() res) {
+    const foundClinicalHistory = await this.clHistService.findOne(id);
+    if (foundClinicalHistory) {
+      return res.status(HttpStatus.OK).json({
+        foundClinicalHistory,
+      });
+    }
+    return res.status(HttpStatus.NOT_FOUND).json({
+      error: 'This This resource  no longer exist or has been removed',
+      foundClinicalHistory,
+    });
   }
 
   @Patch(':id')
-  updateClHistory(
-    @Param('id') id: string,
+  async updateClHistory(
+    @Param('id') id: number,
     @Body() updateClHistDto: UpdateClHistDto,
+    @Res() res,
   ) {
-    return this.clHistService.update(+id, updateClHistDto);
+    const response = await this.clHistService.update(id, updateClHistDto);
+    if (response) {
+      return res.status(HttpStatus.OK).json({
+        message: 'Clinical history updated successfully',
+        response,
+      });
+    } else {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        message: 'Clinical history cannot be updated',
+        response,
+      });
+    }
+  }
+
+  @Delete(':id')
+  async deleteClHistory(@Param('id') id: number, @Res() res) {
+    await this.clHistService.remove(id);
+    res
+      .status(HttpStatus.OK)
+      .json({ message: 'Clinical history deleted successfully' });
   }
 }

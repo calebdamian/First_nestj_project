@@ -1,15 +1,27 @@
-import { Controller, Get, HttpStatus, Post, Res, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Res,
+  Body,
+  UseGuards,
+  NotFoundException,
+  Delete,
+  Put,
+} from '@nestjs/common';
 
 import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
 
 import { AdminService } from 'src/admin/admin.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
 import { CreatePatientDto } from './dto/create-patient.dto';
 
 import { PatientService } from './patient.service';
 
-//@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('pacientes')
 export class PatientController {
   constructor(private patientService: PatientService) {}
@@ -40,31 +52,28 @@ export class PatientController {
     const patient = await this.patientService.findOne(id);
     return res.status(HttpStatus.OK).json({ patient });
   }
-  /*
-  @Delete('/delete/:userId')
-  async deleteUser(@Res() res, @Param('userId') userId) {
-    const userDeleted = await this.userService.deleteUser(userId);
+
+  @Delete(':id')
+  async deletePatient(@Res() res, @Param('id') id) {
+    const userDeleted = await this.patientService.delete(id);
     if (!userDeleted) throw new NotFoundException('User does not exist!');
     return res.status(HttpStatus.OK).json({
-      message: 'User deleted successfully',
+      message: 'Patient deleted successfully',
       userDeleted,
     });
   }
 
-  @Put('/update/:userId')
+  @Put(':id')
   async updateUser(
     @Res() res,
     @Body() createUserDTO: CreatePatientDto,
-    @Param('userId') userId,
+    @Param('id') id,
   ) {
-    const updatedUser = await this.userService.updateUser(
-      userId,
-      createUserDTO,
-    );
-    if (!updatedUser) throw new NotFoundException('User does not exist!');
+    const updatedUser = await this.patientService.update(id, createUserDTO);
+    if (!updatedUser) throw new NotFoundException('Patient does not exist!');
     return res.status(HttpStatus.OK).json({
       message: 'User updated successfully',
       updatedUser,
     });
-  }*/
+  }
 }

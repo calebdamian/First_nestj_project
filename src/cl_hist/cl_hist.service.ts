@@ -57,5 +57,18 @@ export class ClHistService {
     return foundClinicalHistory;
   }
 
-  async update(id: number, updateClHistDto: UpdateClHistDto) {}
+  async update(id: number, updateClHistDto: UpdateClHistDto) {
+    const foundClinicalHistory = await this.clHistrepository.findOne({
+      where: { id },
+    });
+
+    if (foundClinicalHistory)
+      return await this.clHistrepository.update(id, updateClHistDto);
+
+    return;
+  }
+
+  async remove(id: number) {
+    return await this.clHistrepository.delete(id);
+  }
 }

@@ -8,7 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './database/config/orm.config';
 import { AdminModule } from './admin/admin.module';
 import { ClHistModule } from './cl_hist/cl_hist.module';
-
 // TODO: agregar documentacion con swagger
 @Module({
   imports: [

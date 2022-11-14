@@ -12,12 +12,12 @@ export class AdminService {
   ) {}
   async create(createAdminDto: CreateAdminDto) {
     const adminFound = await this.findAll();
-    if (adminFound.length > 0) {
+    /* if (adminFound.length > 0) {
       return new HttpException(
         'Admin already exists',
         HttpStatus.NOT_ACCEPTABLE,
       );
-    }
+    }*/
     const newAdmin = this.adminRepository.create(createAdminDto);
     return this.adminRepository.save(newAdmin);
   }
@@ -27,12 +27,9 @@ export class AdminService {
   }
 
   async findByUsername(nombre_usuario: string) {
-    const admin = await this.adminRepository
-      .createQueryBuilder('administrador')
-      .where('administrador.nombre_usuario= :nombre_usuario', {
-        nombre_usuario: { nombre_usuario },
-      })
-      .getOne();
+    const admin = await this.adminRepository.findOne({
+      where: { nombre_usuario },
+    });
 
     return admin;
   }
