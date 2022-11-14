@@ -1,4 +1,5 @@
-import { Admin } from 'src/admin/entity/admin.entity';
+import { AdministratorEntity } from 'src/admin/entity/admin.entity';
+import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,45 +7,42 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { PatientProfileEntity } from './patient.profile.entity';
 
-@Entity({ name: 'paciente' })
-export class Patient {
+@Entity({ name: 'patient' })
+export class PatientEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({})
-  nombres: string;
+  @Column()
+  first_name: string;
 
-  @Column({})
-  apellidos: string;
+  @Column()
+  middle_name: string;
 
-  @Column({ type: 'date' })
-  fecha_nac: Date;
-
-  @Column('varchar', { length: 10 })
-  num_contacto: string;
+  @Column()
+  last_name: string;
 
   @Column({
     unique: true,
   })
-  num_id: string;
+  id_card: string;
 
-  @Column({
-    unique: true,
-  })
-  email: string;
+  // TODO: Relation with  MedicalRecord, PatientProfile
+  @ManyToOne(() => AdministratorEntity, (admin) => admin.patients)
+  admin: AdministratorEntity;
 
-  @ManyToOne(() => Admin, (admin) => admin.pacientes)
-  admin: Admin;
+  @OneToOne(() => MedicalRecordEntity)
+  @JoinColumn()
+  medical_record: MedicalRecordEntity;
 
+  @OneToOne(() => PatientProfileEntity)
+  @JoinColumn()
+  patient_profile: PatientProfileEntity;
   /*@OneToOne(() => ClHist, (historia_clinica) => historia_clinica.paciente)
   @JoinColumn()
   h_clinica: ClHist;*/
-
-  @CreateDateColumn()
-  fecha_creacion: any;
-
-  @UpdateDateColumn()
-  fecha_modificacion: any;
 }

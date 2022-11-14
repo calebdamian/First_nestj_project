@@ -1,6 +1,9 @@
-import { Admin } from 'src/admin/entity/admin.entity';
-import { ClHist } from 'src/cl_hist/entity/cl_hist.entity';
-import { Patient } from 'src/patient/entity/patient.entity';
+import { AdministratorEntity } from 'src/admin/entity/admin.entity';
+import { Administrator_ProfileEntity } from 'src/admin/entity/admin.profile.entity';
+import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
+import { PatientEntity } from 'src/patient/entity/patient.entity';
+import { PatientProfileEntity } from 'src/patient/entity/patient.profile.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 export function ormConfig(): any {
   return {
@@ -19,7 +22,14 @@ export function ormConfig(): any {
     extra: {
       connectionLimit: parseInt(process.env.DATABASE_CONNECTION_LIMIT),
     },
-    entities: [Admin, Patient, ClHist],
+    entities: [
+      AdministratorEntity,
+      UserEntity,
+      Administrator_ProfileEntity,
+      MedicalRecordEntity,
+      PatientEntity,
+      PatientProfileEntity,
+    ],
     migrations: ['dist/database/migrations/*.js'],
     subscribers: ['dist/observers/subscribers/*.subscriber.js'],
     cli: {

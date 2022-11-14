@@ -15,7 +15,7 @@ import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
 
 import { AdminService } from 'src/admin/admin.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+//import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
 import { CreatePatientDto } from './dto/create-patient.dto';
 

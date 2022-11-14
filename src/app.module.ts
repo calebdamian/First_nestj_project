@@ -1,4 +1,4 @@
-import { AuthModule } from './auth/auth.module';
+//import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,18 +7,20 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './database/config/orm.config';
 import { AdminModule } from './admin/admin.module';
-import { ClHistModule } from './cl_hist/cl_hist.module';
+import { UsersModule } from './users/users.module';
+import { MedicalRecordModule } from './medicalrecord/medicalrecord.module';
 // TODO: agregar documentacion con swagger
 @Module({
   imports: [
-    AuthModule,
+    //AuthModule,
     PatientModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(ormConfig()),
     AdminModule,
-    ClHistModule,
+    UsersModule,
+    MedicalRecordModule,
   ],
   controllers: [AppController],
   providers: [AppService],

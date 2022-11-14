@@ -6,35 +6,37 @@ import {
   CreateDateColumn,
   BaseEntity,
   BeforeInsert,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Patient } from 'src/patient/entity/patient.entity';
-import { ClHist } from 'src/cl_hist/entity/cl_hist.entity';
+import { PatientEntity } from 'src/patient/entity/patient.entity';
 import * as bcrypt from 'bcrypt';
-@Entity({ name: 'administrador' })
-export class Admin {
+import { UserEntity } from 'src/users/entities/user.entity';
+import { Administrator_ProfileEntity } from './admin.profile.entity';
+import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
+@Entity({ name: 'administrator' })
+export class AdministratorEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({})
-  nombres: string;
+  @OneToOne(() => UserEntity)
+  @JoinColumn()
+  user: UserEntity;
 
-  @Column({})
-  apellidos: string;
+  @OneToOne(() => Administrator_ProfileEntity)
+  @JoinColumn()
+  admin_profile: Administrator_ProfileEntity;
 
-  @Column({
-    unique: true,
-  })
-  nombre_usuario: string;
+  @OneToMany(
+    () => MedicalRecordEntity,
+    (medical_records) => medical_records.admin,
+  )
+  medical_records: MedicalRecordEntity[];
 
-  @Column({})
-  password: string;
+  @OneToMany(() => PatientEntity, (patients) => patients.admin)
+  patients: PatientEntity[];
 
-  @Column({
-    unique: true,
-  })
-  email: string;
-
-  @CreateDateColumn()
+  /*@CreateDateColumn()
   fecha_creacion: any;
 
   @OneToMany(() => Patient, (paciente) => paciente.admin, {
@@ -58,5 +60,5 @@ export class Admin {
   async validatePassword(password: string): Promise<boolean> {
     const passwordMatch = await bcrypt.compare(password, this.password);
     return passwordMatch;
-  }
+  }*/
 }
