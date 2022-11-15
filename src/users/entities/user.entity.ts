@@ -1,7 +1,15 @@
 import { IsString } from 'class-validator';
 
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { AdministratorEntity } from 'src/admin/entity/admin.entity';
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -14,6 +22,9 @@ export class UserEntity {
   @IsString()
   @Column()
   password: string;
+
+  @OneToOne(() => AdministratorEntity, (admin) => admin.user)
+  admin: AdministratorEntity;
 
   @BeforeInsert()
   async hashPassword() {

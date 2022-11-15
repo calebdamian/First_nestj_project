@@ -15,15 +15,20 @@ export class AdministratorEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => UserEntity, {
+  @OneToOne(() => UserEntity, (user) => user.admin, {
     eager: true,
   })
   @JoinColumn()
   user: UserEntity;
 
-  @OneToOne(() => Administrator_ProfileEntity, {
-    eager: true,
-  })
+  @OneToOne(
+    () => Administrator_ProfileEntity,
+    (admin_profile) => admin_profile.admin,
+    {
+      eager: true,
+      cascade: true,
+    },
+  )
   @JoinColumn()
   admin_profile: Administrator_ProfileEntity;
 
@@ -32,12 +37,14 @@ export class AdministratorEntity {
     (medical_records) => medical_records.admin,
     {
       eager: true,
+      cascade: true,
     },
   )
   medical_records: MedicalRecordEntity[];
 
   @OneToMany(() => PatientEntity, (patients) => patients.admin, {
     eager: true,
+    cascade: true,
   })
   patients: PatientEntity[];
 }
