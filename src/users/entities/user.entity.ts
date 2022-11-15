@@ -20,9 +20,4 @@ export class UserEntity {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
   }
-
-  async validatePassword(password: string): Promise<boolean> {
-    const passwordMatch = await bcrypt.compare(password, this.password);
-    return passwordMatch;
-  }
 }
