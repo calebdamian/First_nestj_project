@@ -3,14 +3,12 @@ import { CreatePatientDto } from './dto/create-patient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PatientEntity } from './entity/patient.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { AdminService } from 'src/admin/admin.service';
 
 @Injectable()
 export class PatientService {
   constructor(
     @InjectRepository(PatientEntity)
     private patientRepository: Repository<PatientEntity>,
-    private adminService: AdminService,
   ) {}
 
   public async createPatient(id: number, createpatientDto: CreatePatientDto) {

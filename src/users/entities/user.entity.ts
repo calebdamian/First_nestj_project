@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { AdministratorEntity } from 'src/admin/entity/admin.entity';
+import { UserProfileEntity } from './user.profile.entity';
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -24,9 +24,9 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @OneToOne(() => AdministratorEntity, (admin) => admin.user)
+  @OneToOne(() => UserProfileEntity, { eager: true })
   @JoinColumn()
-  admin: AdministratorEntity;
+  profile: UserProfileEntity;
 
   @BeforeInsert()
   async hashPassword() {

@@ -2,8 +2,6 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JWTPayload } from '../jwt.payload';
-import { CreateAdminDto } from 'src/admin/dto/create-admin.dto';
-import { AdminService } from 'src/admin/admin.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

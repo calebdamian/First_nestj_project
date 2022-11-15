@@ -1,4 +1,3 @@
-import { AdministratorEntity } from 'src/admin/entity/admin.entity';
 import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
 import {
   Entity,
@@ -31,8 +30,8 @@ export class PatientEntity {
   })
   id_card: string;
 
-  @ManyToOne(() => AdministratorEntity, (admin) => admin.patients)
-  admin: AdministratorEntity;
+  /* @ManyToOne(() => AdministratorEntity, (admin) => admin.patients)
+  admin: AdministratorEntity;*/
 
   @OneToOne(
     () => MedicalRecordEntity,

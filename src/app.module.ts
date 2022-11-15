@@ -6,7 +6,6 @@ import { PatientModule } from './patient/patient.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './database/config/orm.config';
-import { AdminModule } from './admin/admin.module';
 import { UsersModule } from './users/users.module';
 import { MedicalRecordModule } from './medicalrecord/medicalrecord.module';
 import { AuthModule } from './auth/auth.module';
@@ -19,7 +18,6 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(ormConfig()),
-    AdminModule,
     UsersModule,
     MedicalRecordModule,
     AuthModule,

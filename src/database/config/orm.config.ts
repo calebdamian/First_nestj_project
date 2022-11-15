@@ -1,9 +1,8 @@
-import { AdministratorEntity } from 'src/admin/entity/admin.entity';
-import { Administrator_ProfileEntity } from 'src/admin/entity/admin.profile.entity';
 import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 import { PatientProfileEntity } from 'src/patient/entity/patient.profile.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { UserProfileEntity } from 'src/users/entities/user.profile.entity';
 
 export function ormConfig(): any {
   return {
@@ -23,11 +22,10 @@ export function ormConfig(): any {
       connectionLimit: parseInt(process.env.DATABASE_CONNECTION_LIMIT),
     },
     entities: [
-      AdministratorEntity,
       UserEntity,
-      Administrator_ProfileEntity,
-      MedicalRecordEntity,
+      UserProfileEntity,
       PatientEntity,
+      MedicalRecordEntity,
       PatientProfileEntity,
     ],
     migrations: ['dist/database/migrations/*.js'],

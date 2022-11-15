@@ -1,5 +1,6 @@
 import { IsEmail, IsString } from 'class-validator';
-export class CreateAdminProfileDto {
+
+export class CreateUserProfileDto {
   @IsString()
   full_name: string;
   @IsEmail()

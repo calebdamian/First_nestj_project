@@ -1,4 +1,3 @@
-import { AdministratorEntity } from 'src/admin/entity/admin.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 import {
   Column,
@@ -18,8 +17,8 @@ export class MedicalRecordEntity {
   @Column()
   entry: string;
 
-  @ManyToOne(() => AdministratorEntity, (admin) => admin.medical_records)
-  admin: AdministratorEntity;
+  /*@ManyToOne(() => AdministratorEntity, (admin) => admin.medical_records)
+  admin: AdministratorEntity;*/
 
   @OneToOne(() => PatientEntity, (patient) => patient.medical_record, {
     eager: true,
