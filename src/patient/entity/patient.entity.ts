@@ -34,11 +34,15 @@ export class PatientEntity {
   @ManyToOne(() => AdministratorEntity, (admin) => admin.patients)
   admin: AdministratorEntity;
 
-  @OneToOne(() => MedicalRecordEntity)
-  @JoinColumn()
+  @OneToOne(
+    () => MedicalRecordEntity,
+    (medical_record) => medical_record.patient,
+  )
   medical_record: MedicalRecordEntity;
 
-  @OneToOne(() => PatientProfileEntity)
-  @JoinColumn()
+  @OneToOne(
+    () => PatientProfileEntity,
+    (patient_profile) => patient_profile.patient,
+  )
   patient_profile: PatientProfileEntity;
 }

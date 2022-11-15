@@ -3,6 +3,7 @@ import {
   Admin,
   Column,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -21,6 +22,10 @@ export class Administrator_ProfileEntity {
   @Column({ length: 50 })
   email: string;
 
-  @OneToOne(() => AdministratorEntity, (admin) => admin.admin_profile)
+  @OneToOne(() => AdministratorEntity, (admin) => admin.admin_profile, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn()
   admin: AdministratorEntity;
 }

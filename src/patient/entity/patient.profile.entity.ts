@@ -1,4 +1,11 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PatientEntity } from './patient.entity';
 
 @Entity('patient_profile')
 export class PatientProfileEntity {
@@ -14,6 +21,10 @@ export class PatientProfileEntity {
   @Column()
   email: string;
 
-  @OneToOne(() => PatientProfileEntity, (patient) => patient.patient)
-  patient: PatientProfileEntity;
+  @OneToOne(() => PatientEntity, (patient) => patient.patient_profile, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn()
+  patient: PatientEntity;
 }

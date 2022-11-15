@@ -24,12 +24,7 @@ export class AdministratorEntity {
   @OneToOne(
     () => Administrator_ProfileEntity,
     (admin_profile) => admin_profile.admin,
-    {
-      eager: true,
-      cascade: true,
-    },
   )
-  @JoinColumn()
   admin_profile: Administrator_ProfileEntity;
 
   @OneToMany(

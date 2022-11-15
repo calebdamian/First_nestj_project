@@ -1,5 +1,13 @@
 import { AdministratorEntity } from 'src/admin/entity/admin.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { PatientEntity } from 'src/patient/entity/patient.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('medical_record')
 export class MedicalRecordEntity {
@@ -12,7 +20,11 @@ export class MedicalRecordEntity {
 
   @ManyToOne(() => AdministratorEntity, (admin) => admin.medical_records)
   admin: AdministratorEntity;
-  // TODO: Relations with Patient, Admin
-  /* @ManyToOne(() => Admin, (admin) => admin.pacientes)
-  admin: Admin;*/
+
+  @OneToOne(() => PatientEntity, (patient) => patient.medical_record, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn()
+  patient: PatientEntity;
 }
