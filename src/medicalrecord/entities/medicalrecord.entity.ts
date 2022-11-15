@@ -20,10 +20,10 @@ export class MedicalRecordEntity {
   /*@ManyToOne(() => AdministratorEntity, (admin) => admin.medical_records)
   admin: AdministratorEntity;*/
 
-  @OneToOne(() => PatientEntity, (patient) => patient.medical_record, {
+  /* @OneToOne(() => PatientEntity, (patient) => patient.medical_record, {
     eager: true,
     cascade: true,
     onDelete: 'CASCADE',
   })
-  patient: PatientEntity;
+  patient: PatientEntity;*/
 }

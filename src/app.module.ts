@@ -12,7 +12,6 @@ import { AuthModule } from './auth/auth.module';
 // TODO: agregar documentacion con swagger
 @Module({
   imports: [
-    //AuthModule,
     PatientModule,
     ConfigModule.forRoot({
       isGlobal: true,

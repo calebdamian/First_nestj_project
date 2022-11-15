@@ -50,14 +50,17 @@ export class UsersService {
     return this.usersRepository.save(foundUser);
   }
 
-  async updateUserProfile(id: number, updateUserProfile: UpdateUserProfileDto) {
+  async updateUserProfile(
+    id: number,
+    updateUserProfileDto: UpdateUserProfileDto,
+  ) {
     const profileFound = await this.userProfileRepository.findOneBy({ id });
     if (!profileFound)
       return new HttpException('Profile not found', HttpStatus.NOT_FOUND);
 
-    const updatedProfile = Object.assign(profileFound, updateUserProfile);
+    const updatedProfile = Object.assign(profileFound, updateUserProfileDto);
 
-    return await this.userProfileRepository.save(updateUserProfile);
+    return await this.userProfileRepository.save(updatedProfile);
   }
   findAllUsers(): Promise<UserEntity[]> {
     return this.usersRepository.find();

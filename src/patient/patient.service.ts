@@ -3,28 +3,78 @@ import { CreatePatientDto } from './dto/create-patient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PatientEntity } from './entity/patient.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { PatientProfileEntity } from './entity/patient.profile.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { CreatePatientProfileDto } from './dto/create-patient-profile.dto';
+import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
 
 @Injectable()
 export class PatientService {
   constructor(
     @InjectRepository(PatientEntity)
     private patientRepository: Repository<PatientEntity>,
+    @InjectRepository(PatientProfileEntity)
+    private patientProfileRepository: Repository<PatientProfileEntity>,
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
   ) {}
 
-  public async createPatient(id: number, createpatientDto: CreatePatientDto) {
-    /*  const admin = await this.adminService.findById(id);
-    if (!admin)
+  public async createPatient(id: number, createPatientDto: CreatePatientDto) {
+    const foundUser = await this.usersRepository.findOneBy({ id });
+    console.log(foundUser);
+    if (!foundUser)
       throw new HttpException(
-        'Admin not found. Cannot create patient.',
-        HttpStatus.NOT_ACCEPTABLE,
+        'Admin user not found. Cannot create patient.',
+        HttpStatus.BAD_REQUEST,
       );
     const newPatient = this.patientRepository.create({
-      ...createpatientDto,
-      admin,
+      ...createPatientDto,
     });
-    return await this.patientRepository.save(newPatient);
-    */
-    return 'Patient created';
+
+    return this.patientRepository.save(newPatient);
+  }
+
+  async createPatientProfile(
+    id: number,
+    createPatientProfileDto: CreatePatientProfileDto,
+  ) {
+    const foundPatient = await this.patientRepository.findOneBy({ id });
+    if (!foundPatient)
+      throw new HttpException(
+        'Patient not found. Cannot create profile.',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    const newPatientProfile = this.patientProfileRepository.create(
+      createPatientProfileDto,
+    );
+
+    const savedPatientProfile = await this.patientProfileRepository.save(
+      newPatientProfile,
+    );
+
+    foundPatient.patient_profile = savedPatientProfile;
+    return this.patientRepository.save(foundPatient);
+  }
+
+  async updatePatientProfile(
+    id: number,
+    updatePatientProfileDto: UpdatePatientProfileDto,
+  ) {
+    const patientProfileFound = await this.patientProfileRepository.findOneBy({
+      id,
+    });
+    if (!patientProfileFound)
+      throw new HttpException(
+        'Patient not found. Cannot create profile.',
+        HttpStatus.BAD_REQUEST,
+      );
+    const updatedPatientProfile = Object.assign(
+      patientProfileFound,
+      updatePatientProfileDto,
+    );
+
+    return await this.patientProfileRepository.save(updatedPatientProfile);
   }
 
   async update(id: number, createUserDTO: CreatePatientDto) {

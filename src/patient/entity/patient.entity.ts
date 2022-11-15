@@ -31,20 +31,23 @@ export class PatientEntity {
   })
   id_card: string;
 
+  @OneToOne(
+    () => PatientProfileEntity,
+    (patient_profile) => patient_profile.patient,
+    {
+      eager: true,
+    },
+  )
+  @JoinColumn()
+  patient_profile: PatientProfileEntity;
+
   @ManyToOne(() => UserEntity, (user) => user.patient)
   user: UserEntity;
 
-  @OneToOne(
+  /**@OneToOne(
     () => MedicalRecordEntity,
     (medical_record) => medical_record.patient,
   )
   @JoinColumn()
-  medical_record: MedicalRecordEntity;
-
-  @OneToOne(
-    () => PatientProfileEntity,
-    (patient_profile) => patient_profile.patient,
-  )
-  @JoinColumn()
-  patient_profile: PatientProfileEntity;
+  medical_record: MedicalRecordEntity;*/
 }

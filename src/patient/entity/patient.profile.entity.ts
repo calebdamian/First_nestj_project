@@ -21,10 +21,6 @@ export class PatientProfileEntity {
   @Column()
   email: string;
 
-  @OneToOne(() => PatientEntity, (patient) => patient.patient_profile, {
-    eager: true,
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
+  @OneToOne(() => PatientEntity, (patient) => patient.patient_profile)
   patient: PatientEntity;
 }
