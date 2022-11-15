@@ -1,4 +1,5 @@
 import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -30,8 +31,8 @@ export class PatientEntity {
   })
   id_card: string;
 
-  /* @ManyToOne(() => AdministratorEntity, (admin) => admin.patients)
-  admin: AdministratorEntity;*/
+  @ManyToOne(() => UserEntity, (user) => user.patient)
+  user: UserEntity;
 
   @OneToOne(
     () => MedicalRecordEntity,

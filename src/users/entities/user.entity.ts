@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserProfileEntity } from './user.profile.entity';
+import { PatientEntity } from 'src/patient/entity/patient.entity';
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -27,6 +28,9 @@ export class UserEntity {
   @OneToOne(() => UserProfileEntity, { eager: true })
   @JoinColumn()
   profile: UserProfileEntity;
+
+  @OneToMany(() => PatientEntity, (patient) => patient.user, { eager: true })
+  patient: PatientEntity[];
 
   @BeforeInsert()
   async hashPassword() {
