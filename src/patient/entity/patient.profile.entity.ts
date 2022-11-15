@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('patient_profile')
 export class PatientProfileEntity {
@@ -13,4 +13,7 @@ export class PatientProfileEntity {
 
   @Column()
   email: string;
+
+  @OneToOne(() => PatientProfileEntity, (patient) => patient.patient)
+  patient: PatientProfileEntity;
 }
