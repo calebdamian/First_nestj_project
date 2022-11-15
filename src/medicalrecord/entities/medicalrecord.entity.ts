@@ -24,7 +24,7 @@ export class MedicalRecordEntity {
   @OneToOne(() => PatientEntity, (patient) => patient.medical_record, {
     eager: true,
     cascade: true,
+    onDelete: 'CASCADE',
   })
-  @JoinColumn()
   patient: PatientEntity;
 }

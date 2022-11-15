@@ -24,7 +24,7 @@ export class PatientProfileEntity {
   @OneToOne(() => PatientEntity, (patient) => patient.patient_profile, {
     eager: true,
     cascade: true,
+    onDelete: 'CASCADE',
   })
-  @JoinColumn()
   patient: PatientEntity;
 }

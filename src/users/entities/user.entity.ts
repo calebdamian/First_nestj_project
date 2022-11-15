@@ -4,6 +4,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -24,6 +25,7 @@ export class UserEntity {
   password: string;
 
   @OneToOne(() => AdministratorEntity, (admin) => admin.user)
+  @JoinColumn()
   admin: AdministratorEntity;
 
   @BeforeInsert()

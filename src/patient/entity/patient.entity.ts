@@ -38,11 +38,13 @@ export class PatientEntity {
     () => MedicalRecordEntity,
     (medical_record) => medical_record.patient,
   )
+  @JoinColumn()
   medical_record: MedicalRecordEntity;
 
   @OneToOne(
     () => PatientProfileEntity,
     (patient_profile) => patient_profile.patient,
   )
+  @JoinColumn()
   patient_profile: PatientProfileEntity;
 }

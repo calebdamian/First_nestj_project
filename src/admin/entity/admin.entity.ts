@@ -17,14 +17,15 @@ export class AdministratorEntity {
 
   @OneToOne(() => UserEntity, (user) => user.admin, {
     eager: true,
+    onDelete: 'CASCADE',
   })
-  @JoinColumn()
   user: UserEntity;
 
   @OneToOne(
     () => Administrator_ProfileEntity,
     (admin_profile) => admin_profile.admin,
   )
+  @JoinColumn()
   admin_profile: Administrator_ProfileEntity;
 
   @OneToMany(

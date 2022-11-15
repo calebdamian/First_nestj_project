@@ -26,6 +26,5 @@ export class Administrator_ProfileEntity {
     eager: true,
     cascade: true,
   })
-  @JoinColumn()
   admin: AdministratorEntity;
 }

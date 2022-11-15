@@ -18,19 +18,6 @@ export class AdminService {
   ) {}
   //TODO: Al crear el admin, debo crear un perfil para asignarle, por lo que pido todos los datos, incluyendo los del perfil
   async createAdmin(createAdminDto: CreateAdminDto) {
-    /* const user = await this.userService.findOneUserById(createAdminDto.userId);
-
-    if (user) {
-      createAdminDto.userId = 1;
-
-      const profile = this.createAdminProfile(createAdminProfileDto);
-
-      if (profile) {
-        createAdminDto.adminProfileId = 1;
-
-        await this.adminRepository.save(createAdminDto);
-      }
-    }*/
     return 'Admin creation';
   }
 
