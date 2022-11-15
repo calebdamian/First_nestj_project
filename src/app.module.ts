@@ -9,6 +9,7 @@ import { ormConfig } from './database/config/orm.config';
 import { AdminModule } from './admin/admin.module';
 import { UsersModule } from './users/users.module';
 import { MedicalRecordModule } from './medicalrecord/medicalrecord.module';
+import { AuthModule } from './auth/auth.module';
 // TODO: agregar documentacion con swagger
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MedicalRecordModule } from './medicalrecord/medicalrecord.module';
     AdminModule,
     UsersModule,
     MedicalRecordModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
