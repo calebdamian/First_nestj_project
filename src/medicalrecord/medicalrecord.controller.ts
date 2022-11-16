@@ -8,11 +8,13 @@ import {
   Delete,
   ParseIntPipe,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { MedicalRecordService } from './medicalrecord.service';
 import { CreateMedicalRecordDto } from './dto/create-medicalrecord.dto';
 import { UpdateMedicalRecordDto } from './dto/update-medicalrecord.dto';
-
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class MedicalRecordController {
   constructor(private readonly medicalRecordService: MedicalRecordService) {}

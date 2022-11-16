@@ -13,9 +13,8 @@ import {
 
 import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { CreatePatientProfileDto } from './dto/create-patient-profile.dto';
-
-//import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
@@ -23,7 +22,7 @@ import { UpdatePatientDto } from './dto/update-patient.dto';
 
 import { PatientService } from './patient.service';
 
-//@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class PatientController {
   constructor(private patientService: PatientService) {}
