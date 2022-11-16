@@ -17,22 +17,22 @@ import { UpdateMedicalRecordDto } from './dto/update-medicalrecord.dto';
 export class MedicalRecordController {
   constructor(private readonly medicalRecordService: MedicalRecordService) {}
 
-  @Post('user/:user-id/patient/:patient-id/medical-record')
-  create(
-    @Param('user-id', ParseIntPipe) user_id: number,
-    @Param('patient-id', ParseIntPipe) patient_id: number,
+  @Post('user/:userId/patient/:patientId/medical-record')
+  createMedicalRecord(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('patientId', ParseIntPipe) patientId: number,
     @Body() createMedicalRecordDto: CreateMedicalRecordDto,
   ) {
     return this.medicalRecordService.createMedicalRecord(
-      user_id,
-      patient_id,
+      userId,
+      patientId,
       createMedicalRecordDto,
     );
   }
 
   @Get('medical-records')
   findAllMedicalRecords() {
-    return this.medicalRecordService.findAllMedicalRecords;
+    return this.medicalRecordService.findAllMedicalRecords();
   }
 
   @Get('medical-record/:id')
