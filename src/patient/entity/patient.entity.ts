@@ -36,6 +36,7 @@ export class PatientEntity {
     (patient_profile) => patient_profile.patient,
     {
       eager: true,
+      onDelete: 'CASCADE',
     },
   )
   @JoinColumn()

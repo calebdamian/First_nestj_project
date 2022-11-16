@@ -13,10 +13,13 @@ import {
 
 import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
+import { CreatePatientProfileDto } from './dto/create-patient-profile.dto';
 
 //import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 
 import { CreatePatientDto } from './dto/create-patient.dto';
+import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
+import { UpdatePatientDto } from './dto/update-patient.dto';
 
 import { PatientService } from './patient.service';
 
@@ -34,27 +37,27 @@ export class PatientController {
 
   @Get('/patients')
   async findAllPatients(@Res() res) {
-    const patients = await this.patientService.findAll();
+    const patients = await this.patientService.findAllPatients();
     res.status(HttpStatus.OK).json({
       patients,
     });
   }
 
-  @Get('patient/:numId')
-  async getPatientByNumId(@Res() res, @Param('num_id') num_id) {
-    const patient = await this.patientService.findOneByNumId(num_id);
+  @Get('patient/card/:id-card')
+  async getPatientByNumId(@Res() res, @Param('id-card') id_card) {
+    const patient = await this.patientService.findOnePatientByCardId(id_card);
     return res.status(HttpStatus.OK).json({ patient });
   }
 
   @Get('patient/:id')
   async getPatientById(@Res() res, @Param('id') id) {
-    const patient = await this.patientService.findOne(id);
+    const patient = await this.patientService.findOnePatientById(id);
     return res.status(HttpStatus.OK).json({ patient });
   }
 
   @Delete('patient/:id')
   async deletePatient(@Res() res, @Param('id') id) {
-    const userDeleted = await this.patientService.delete(id);
+    const userDeleted = await this.patientService.deletePatient(id);
     if (!userDeleted) throw new NotFoundException('User does not exist!');
     return res.status(HttpStatus.OK).json({
       message: 'Patient deleted successfully',
@@ -65,14 +68,42 @@ export class PatientController {
   @Put('patient/:id')
   async updateUser(
     @Res() res,
-    @Body() createUserDTO: CreatePatientDto,
+    @Body() updatePatientDto: UpdatePatientDto,
     @Param('id') id,
   ) {
-    const updatedUser = await this.patientService.update(id, createUserDTO);
-    if (!updatedUser) throw new NotFoundException('Patient does not exist!');
+    const updatedPatient = await this.patientService.updatePatient(
+      id,
+      updatePatientDto,
+    );
     return res.status(HttpStatus.OK).json({
-      message: 'User updated successfully',
-      updatedUser,
+      message: 'Patient updated successfully',
+      updatedPatient,
     });
+  }
+
+  @Post('patient/:id/profile')
+  createPatientProfile(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createPatientProfileDto: CreatePatientProfileDto,
+  ) {
+    return this.patientService.createPatientProfile(
+      id,
+      createPatientProfileDto,
+    );
+  }
+
+  @Put('patient/:id/profile')
+  updatePatientProfile(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePatientProfileDto: UpdatePatientProfileDto,
+  ) {
+    return this.patientService.updatePatientProfile(
+      id,
+      updatePatientProfileDto,
+    );
+  }
+  @Get('patient/:id/profile')
+  findPatientProfile(@Param('id', ParseIntPipe) id: number) {
+    return this.patientService.findOnePatientProfileById(id);
   }
 }

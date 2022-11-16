@@ -12,7 +12,7 @@ export class PatientProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('date')
   dob: Date;
 
   @Column()

@@ -7,6 +7,7 @@ import { PatientProfileEntity } from './entity/patient.profile.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { CreatePatientProfileDto } from './dto/create-patient-profile.dto';
 import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
+import { UpdatePatientDto } from './dto/update-patient.dto';
 
 @Injectable()
 export class PatientService {
@@ -29,7 +30,10 @@ export class PatientService {
       );
     const newPatient = this.patientRepository.create({
       ...createPatientDto,
+      user: foundUser,
     });
+
+    console.log(newPatient);
 
     return this.patientRepository.save(newPatient);
   }
@@ -77,43 +81,49 @@ export class PatientService {
     return await this.patientProfileRepository.save(updatedPatientProfile);
   }
 
-  async update(id: number, createUserDTO: CreatePatientDto) {
-    /*if (this.findOne(id) != null) {
-      return await this.patientRepository.update(id, createUserDTO);
-    }*/
-    return 'Patient created';
-  }
-  async delete(id: number) {
-    return 'Patient deleted';
-    // return await this.patientRepository.delete(id);
-  }
-
-  async findAll() /*: Promise<PatientEntity[]>*/ {
-    //return this.patientRepository.find({ relations: ['admin'] });
-    return 'Patient created';
-  }
-
-  async findOneByNumId(num_id: string) {
-    /* const foundPatient = await this.patientRepository.findOne({
-      where: {
-        num_id: num_id,
-      },
-    });
+  async updatePatient(id: number, updatePatientDto: UpdatePatientDto) {
+    const foundPatient = await this.patientRepository.findOneBy({ id });
     if (!foundPatient) {
-      return new HttpException('Patient not found', HttpStatus.NOT_FOUND);
+      return new HttpException(
+        'Patient not found at update',
+        HttpStatus.NOT_FOUND,
+      );
     }
-    return foundPatient;*/
-    return 'Patient found';
+    const updatedPatient = Object.assign(foundPatient, updatePatientDto);
+
+    return await this.patientRepository.save(updatedPatient);
   }
-  async findOne(id: number) {
-    /*const foundPatient = await this.patientRepository
-      .createQueryBuilder('paciente')
-      .where('paciente.id= :id', {
-        id: id,
-      })
-      .getOne();
+
+  async deletePatient(id: number) {
+    return await this.patientRepository.delete(id);
+  }
+
+  async findAllPatients(): Promise<PatientEntity[]> {
+    return this.patientRepository.find();
+  }
+
+  async findOnePatientByCardId(id_card: string) {
+    const foundPatient = await this.patientRepository.findOneBy({ id_card });
+    if (!foundPatient) {
+      return new HttpException(
+        'Patient not found at findOneByCardId',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return foundPatient;
-  }*/
-    return 'Patient found';
+  }
+  async findOnePatientById(id: number) {
+    const foundPatient = await this.patientRepository.findOneBy({ id });
+    if (!foundPatient) {
+      return new HttpException(
+        'Patient not found ad findOneByPk',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return foundPatient;
+  }
+
+  async findOnePatientProfileById(id: number) {
+    return await this.patientProfileRepository.findOneBy({ id });
   }
 }
