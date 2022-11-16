@@ -4,22 +4,18 @@ import {
   Body,
   UnauthorizedException,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local.auth.guard';
-import { LoginDto } from './login.dto';
+import { LoginDto } from './dto/login.dto';
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
-  //@UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Body() loginDTO: LoginDto): Promise<{ access_token: string }> {
-    const { username, password } = loginDTO;
-    const valid = await this.authService.validateUser(username, password);
-    if (!valid) {
-      throw new UnauthorizedException();
-    }
-    return await this.authService.loginWithCredentials(username);
+  @UseGuards(LocalAuthGuard)
+  @Post('user/login')
+  async login(@Request() req) {
+    return this.authService.loginWithCredentials(req.user);
   }
   /* @UseGuards(AuthGuard('local'))
   @Post('login')

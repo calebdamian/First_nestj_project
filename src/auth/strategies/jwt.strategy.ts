@@ -1,7 +1,7 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JWTPayload } from '../jwt.payload';
+import { JWTPayload } from '../utils/jwt.payload';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,15 +12,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: 'process.env.JWT_SECRET',
     });
   }
-  /*
-  async validate(payload: JWTPayload): Promise<CreateAdminDto> {
-    const user = await this.adminService.findById(payload.id);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    return user;
-  }*/
   async validate(payload: any) {
-    return { id: payload.sub, username: payload.username };
+    console.log(payload);
+    return { username: payload.username };
   }
 }
