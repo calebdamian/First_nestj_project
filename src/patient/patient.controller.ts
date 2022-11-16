@@ -66,7 +66,7 @@ export class PatientController {
   }
 
   @Put('patient/:id')
-  async updateUser(
+  async updatePatient(
     @Res() res,
     @Body() updatePatientDto: UpdatePatientDto,
     @Param('id') id,

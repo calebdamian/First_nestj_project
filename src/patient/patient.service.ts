@@ -22,7 +22,7 @@ export class PatientService {
 
   public async createPatient(id: number, createPatientDto: CreatePatientDto) {
     const foundUser = await this.usersRepository.findOneBy({ id });
-    console.log(foundUser);
+    //console.log(foundUser);
     if (!foundUser)
       throw new HttpException(
         'Admin user not found. Cannot create patient.',
@@ -33,7 +33,7 @@ export class PatientService {
       user: foundUser,
     });
 
-    console.log(newPatient);
+    //console.log(newPatient);
 
     return this.patientRepository.save(newPatient);
   }
@@ -95,6 +95,13 @@ export class PatientService {
   }
 
   async deletePatient(id: number) {
+    const foundPatient = await this.patientRepository.findOneBy({ id });
+    if (!foundPatient) {
+      return new HttpException(
+        'Patient not found at delete',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return await this.patientRepository.delete(id);
   }
 

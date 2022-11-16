@@ -12,6 +12,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { UserProfileEntity } from './user.profile.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
+import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -31,6 +32,15 @@ export class UserEntity {
 
   @OneToMany(() => PatientEntity, (patient) => patient.user, { eager: true })
   patient: PatientEntity[];
+
+  @OneToMany(
+    () => MedicalRecordEntity,
+    (medical_record) => medical_record.user,
+    {
+      eager: true,
+    },
+  )
+  medical_record: MedicalRecordEntity[];
 
   @BeforeInsert()
   async hashPassword() {
