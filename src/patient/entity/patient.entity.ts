@@ -45,10 +45,15 @@ export class PatientEntity {
   @ManyToOne(() => UserEntity, (user) => user.patient)
   user: UserEntity;
 
-  /**@OneToOne(
+  @OneToOne(
     () => MedicalRecordEntity,
     (medical_record) => medical_record.patient,
+    {
+      eager: true,
+      cascade: true,
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn()
-  medical_record: MedicalRecordEntity;*/
+  medical_record: MedicalRecordEntity;
 }
