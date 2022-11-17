@@ -13,23 +13,32 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<any> {
-    console.log('At AUTH.SERVICE file');
-    console.log(username, password);
-    const user = await this.usersService.findOneUserByUsername(username);
+    //console.log('At AUTH.SERVICE file');
+    //console.log(username, password);
+    const foundUser = await this.usersService.findOneUserByUsername(username);
+    //console.log(user);
+    if (!foundUser) return null;
+    const isValidPass = await this.validatePassword(
+      password,
+      foundUser.password,
+    );
+    console.log('At auth service ');
+    console.log(isValidPass);
+    if (!isValidPass) return null;
 
-    if (this.validatePassword(password, user.password)) return user;
-
-    return null;
+    return foundUser;
   }
 
   async validatePassword(
     plainTextPassword: string,
     password: string,
   ): Promise<boolean> {
-    console.log('At validatePassword');
-    console.log(plainTextPassword);
-    console.log(password);
+    //console.log('At validatePassword');
+    //console.log(plainTextPassword);
+    //console.log(password);
     const passwordMatch = await bcrypt.compare(plainTextPassword, password);
+    console.log('PASO EL BCRYPT');
+    console.log(passwordMatch);
     return passwordMatch;
   }
 

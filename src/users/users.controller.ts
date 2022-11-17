@@ -25,7 +25,7 @@ export class UsersController {
     return await this.usersService.createUser(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post('user/:id/profile')
   createUserProfile(
     @Param('id', ParseIntPipe) id: number,
@@ -33,7 +33,7 @@ export class UsersController {
   ) {
     return this.usersService.createUserProfile(id, createUserProfileDto);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put('user/:id/profile')
   updateUserProfile(
     @Param('id', ParseIntPipe) id: number,
@@ -41,22 +41,22 @@ export class UsersController {
   ) {
     return this.usersService.updateUserProfile(id, updateUserProfileDto);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get('user/:id/profile')
   findUserProfile(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOneProfileById(id);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get('users')
   findAll() {
     return this.usersService.findAllUsers();
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get('user/:id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOneUserById(+id);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put('user/:id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -64,7 +64,7 @@ export class UsersController {
   ) {
     return this.usersService.updateUser(id, updateUserDto);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete('user/:id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.removeUser(id);
