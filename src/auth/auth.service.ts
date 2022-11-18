@@ -22,8 +22,8 @@ export class AuthService {
       password,
       foundUser.password,
     );
-    console.log('At auth service ');
-    console.log(isValidPass);
+    // console.log('At auth service ');
+    // console.log(isValidPass);
     if (!isValidPass) return null;
 
     return foundUser;

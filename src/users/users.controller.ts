@@ -8,6 +8,8 @@ import {
   Put,
   ParseIntPipe,
   UseGuards,
+  HttpException,
+  Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +17,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserProfileDto } from './dto/create-profile.dto';
 import { UpdateUserProfileDto } from './dto/update-profile.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+import { HttpStatus } from '@nestjs/common/enums';
 
 @Controller()
 export class UsersController {
