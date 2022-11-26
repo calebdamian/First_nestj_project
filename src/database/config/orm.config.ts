@@ -1,3 +1,6 @@
+import { DiagnosisEntity } from 'src/diagnosis/entities/diagnosis.entity';
+import { DrugEntity } from 'src/drug/entities/drug.entity';
+import { EntryEntity } from 'src/entry/entities/entry.entity';
 import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
@@ -25,6 +28,9 @@ export function ormConfig(): any {
       UserProfileEntity,
       PatientEntity,
       MedicalRecordEntity,
+      EntryEntity,
+      DiagnosisEntity,
+      DrugEntity,
     ],
     migrations: ['dist/database/migrations/*.js'],
     subscribers: ['dist/observers/subscribers/*.subscriber.js'],

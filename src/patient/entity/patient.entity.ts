@@ -58,7 +58,7 @@ export class PatientEntity {
     {
       eager: true,
       cascade: true,
-      onDelete: 'CASCADE',
+      //  onDelete: 'CASCADE',
     },
   )
   @JoinColumn()

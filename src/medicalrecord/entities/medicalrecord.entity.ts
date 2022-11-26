@@ -1,3 +1,4 @@
+import { EntryEntity } from 'src/entry/entities/entry.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -14,9 +16,10 @@ export class MedicalRecordEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // this column was generated for test purposes only
-  @Column()
-  entry: string;
+  @OneToMany(() => EntryEntity, (entries) => entries.medicalRecord, {
+    eager: true,
+  })
+  entries: EntryEntity[];
 
   @OneToOne(() => PatientEntity, (patient) => patient.medical_record)
   patient: PatientEntity;
