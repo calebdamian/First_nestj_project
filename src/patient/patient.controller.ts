@@ -22,12 +22,8 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
-import { CreatePatientProfileDto } from './dto/create-patient-profile.dto';
-
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
-
 import { PatientService } from './patient.service';
 
 @ApiTags('Patients')
@@ -106,41 +102,5 @@ export class PatientController {
       message: 'Patient updated successfully',
       updatedPatient,
     });
-  }
-
-  @Post('patient/:id/profile')
-  @ApiCreatedResponse()
-  @ApiUnprocessableEntityResponse()
-  @ApiForbiddenResponse()
-  createPatientProfile(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() createPatientProfileDto: CreatePatientProfileDto,
-  ) {
-    return this.patientService.createPatientProfile(
-      id,
-      createPatientProfileDto,
-    );
-  }
-
-  @Put('patient/:id/profile')
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  @ApiUnprocessableEntityResponse()
-  updatePatientProfile(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updatePatientProfileDto: UpdatePatientProfileDto,
-  ) {
-    return this.patientService.updatePatientProfile(
-      id,
-      updatePatientProfileDto,
-    );
-  }
-  @Get('patient/:id/profile')
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  findPatientProfile(@Param('id', ParseIntPipe) id: number) {
-    return this.patientService.findOnePatientProfileById(id);
   }
 }

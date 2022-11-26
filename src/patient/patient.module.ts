@@ -4,15 +4,11 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
 
 import { PatientEntity } from './entity/patient.entity';
-import { PatientProfileEntity } from './entity/patient.profile.entity';
 import { PatientController } from './patient.controller';
 import { PatientService } from './patient.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([PatientEntity, PatientProfileEntity, UserEntity]),
-    UsersModule,
-  ],
+  imports: [TypeOrmModule.forFeature([PatientEntity, UserEntity]), UsersModule],
   controllers: [PatientController],
   providers: [PatientService],
   exports: [PatientService],

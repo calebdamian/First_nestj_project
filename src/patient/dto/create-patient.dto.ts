@@ -33,5 +33,24 @@ export class CreatePatientDto {
   })
   @IsString()
   id_card: string;
+
+  @ApiProperty({
+    type: Date,
+    description: 'Patients born date',
+  })
+  @IsDateString()
+  dob: Date;
+  @ApiProperty({
+    type: String,
+    description: 'Patients contact number',
+  })
+  @IsString()
+  contact_number: string;
+  @ApiProperty({
+    type: String,
+    description: 'Patients email',
+  })
+  @IsEmail()
+  email: string;
   //userId: number;
 }

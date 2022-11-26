@@ -10,7 +10,6 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { PatientProfileEntity } from './patient.profile.entity';
 
 @Entity({ name: 'patient' })
 export class PatientEntity {
@@ -31,16 +30,24 @@ export class PatientEntity {
   })
   id_card: string;
 
-  @OneToOne(
+  @Column('date')
+  dob: Date;
+
+  @Column()
+  contact_number: string;
+
+  @Column()
+  email: string;
+  /* @OneToOne(
     () => PatientProfileEntity,
     (patient_profile) => patient_profile.patient,
     {
       eager: true,
       onDelete: 'CASCADE',
     },
-  )
-  @JoinColumn()
-  patient_profile: PatientProfileEntity;
+  )*/
+  /*@JoinColumn()
+  patient_profile: PatientProfileEntity;*/
 
   @ManyToOne(() => UserEntity, (user) => user.patient)
   user: UserEntity;

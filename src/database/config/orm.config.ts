@@ -1,6 +1,5 @@
 import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
-import { PatientProfileEntity } from 'src/patient/entity/patient.profile.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UserProfileEntity } from 'src/users/entities/user.profile.entity';
 
@@ -26,7 +25,6 @@ export function ormConfig(): any {
       UserProfileEntity,
       PatientEntity,
       MedicalRecordEntity,
-      PatientProfileEntity,
     ],
     migrations: ['dist/database/migrations/*.js'],
     subscribers: ['dist/observers/subscribers/*.subscriber.js'],
