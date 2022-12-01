@@ -2,10 +2,8 @@ import { EntryEntity } from 'src/entry/entities/entry.entity';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
-  Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -22,8 +20,9 @@ export class MedicalRecordEntity {
   entries: EntryEntity[];
 
   @OneToOne(() => PatientEntity, (patient) => patient.medical_record)
+  @JoinColumn()
   patient: PatientEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.medical_record)
-  user: UserEntity;
+  /*@ManyToOne(() => UserEntity, (user) => user.medical_record)
+  user: UserEntity;*/
 }

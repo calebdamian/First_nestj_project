@@ -7,6 +7,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -36,10 +38,10 @@ export class EntryEntity {
   )
   medicalRecord: MedicalRecordEntity;
 
-  @OneToMany(() => DrugEntity, (drug) => drug.entry)
+  @ManyToMany(() => DrugEntity)
+  @JoinTable()
   drugs: DrugEntity[];
 
   @OneToOne(() => DiagnosisEntity)
-  @JoinColumn()
   diagnosis: DiagnosisEntity;
 }

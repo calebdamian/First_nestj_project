@@ -42,7 +42,7 @@ export class MedicalRecordService {
 
     const newMedicalRecord = this.medicalRecordRepository.create({
       ...createMedicalRecordDto,
-      user: foundUser,
+      // user: foundUser,
       patient: foundPatient,
     });
 

@@ -61,6 +61,5 @@ export class PatientEntity {
       //  onDelete: 'CASCADE',
     },
   )
-  @JoinColumn()
   medical_record: MedicalRecordEntity;
 }

@@ -1,5 +1,11 @@
 import { EntryEntity } from 'src/entry/entities/entry.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('drug')
 export class DrugEntity {
@@ -24,6 +30,6 @@ export class DrugEntity {
   @Column()
   unitsQty: number;
 
-  @ManyToOne(() => EntryEntity, (entry) => entry.drugs)
-  entry: EntryEntity;
+  @ManyToMany(() => EntryEntity)
+  entry: EntryEntity[];
 }

@@ -1,5 +1,11 @@
 import { EntryEntity } from 'src/entry/entities/entry.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('diagnosis')
 export class DiagnosisEntity {
@@ -10,5 +16,6 @@ export class DiagnosisEntity {
   name: string;
 
   @OneToOne(() => EntryEntity)
+  @JoinColumn()
   entry: EntryEntity;
 }
