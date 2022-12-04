@@ -84,7 +84,7 @@ export class UsersController {
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOneUserById(+id);
+    return this.usersService.findOneUserById(id);
   }
   //@UseGuards(JwtAuthGuard)
   @Put('user/:id')
