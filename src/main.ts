@@ -1,8 +1,8 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
 
-import * as passport from 'passport';
+import passport from 'passport';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 

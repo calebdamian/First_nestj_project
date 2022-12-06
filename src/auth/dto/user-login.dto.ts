@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 export class LoginForm {
   @ApiProperty({
     type: String,
-    description: 'Existing user username',
+    description: 'Existing user email',
   })
-  username: string;
+  email: string;
   @ApiProperty({
     type: String,
     description: 'Existing user password',

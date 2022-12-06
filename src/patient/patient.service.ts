@@ -61,8 +61,8 @@ export class PatientService {
     return this.patientRepository.find();
   }
 
-  async findOnePatientByCardId(id_card: string) {
-    const foundPatient = await this.patientRepository.findOneBy({ id_card });
+  async findOnePatientByCardId(idCard: string) {
+    const foundPatient = await this.patientRepository.findOneBy({ idCard });
     if (!foundPatient) {
       return new HttpException(
         'Patient not found at findOneByCardId',

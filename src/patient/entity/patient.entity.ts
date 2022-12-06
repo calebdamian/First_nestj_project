@@ -1,14 +1,11 @@
-import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
+import { EntryEntity } from 'src/entry/entities/entry.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'patient' })
@@ -17,49 +14,27 @@ export class PatientEntity {
   id: number;
 
   @Column({ length: 50 })
-  first_name: string;
+  firstName: string;
 
   @Column({ length: 50 })
-  middle_name: string;
+  lastName: string;
 
-  @Column({ length: 50 })
-  last_name: string;
-
-  @Column({
-    unique: true,
-  })
-  id_card: string;
+  @Column({ unique: true })
+  idCard: string;
 
   @Column('date')
   dob: Date;
 
   @Column()
-  contact_number: string;
+  contactNumber: string;
 
   @Column()
   email: string;
-  /* @OneToOne(
-    () => PatientProfileEntity,
-    (patient_profile) => patient_profile.patient,
-    {
-      eager: true,
-      onDelete: 'CASCADE',
-    },
-  )*/
-  /*@JoinColumn()
-  patient_profile: PatientProfileEntity;*/
 
-  @ManyToOne(() => UserEntity, (user) => user.patient)
+  // Doctor
+  @ManyToOne(() => UserEntity, (user) => user.patients)
   user: UserEntity;
 
-  @OneToOne(
-    () => MedicalRecordEntity,
-    (medical_record) => medical_record.patient,
-    {
-      eager: true,
-      cascade: true,
-      //  onDelete: 'CASCADE',
-    },
-  )
-  medical_record: MedicalRecordEntity;
+  @OneToMany(() => EntryEntity, (entry) => entry.patient)
+  medicalRecord: EntryEntity[];
 }

@@ -1,34 +1,19 @@
 import { EntryEntity } from 'src/entry/entities/entry.entity';
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('drug')
 export class DrugEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  drugName: string;
+  @Column({ nullable: true })
+  genericName?: string;
 
-  @Column()
-  activePrinciple: string;
+  @Column({ nullable: true })
+  brandName?: string;
 
-  @Column()
-  administration: string;
-
-  @Column()
-  commonUse: string;
-
-  @Column()
-  units: string;
-
-  @Column()
-  unitsQty: number;
+  @Column({ nullable: true })
+  form?: string;
 
   @ManyToMany(() => EntryEntity)
   entry: EntryEntity[];

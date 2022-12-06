@@ -30,7 +30,7 @@ import { PatientService } from './patient.service';
 @UseGuards(JwtAuthGuard)
 @Controller()
 export class PatientController {
-  constructor(private patientService: PatientService) {}
+  constructor(private patientService: PatientService) { }
   @Post('/user/:id/patient')
   @ApiCreatedResponse()
   @ApiUnprocessableEntityResponse()

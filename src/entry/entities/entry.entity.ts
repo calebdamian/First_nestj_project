@@ -1,17 +1,13 @@
 import { IsInt, IsString } from 'class-validator';
-import { DiagnosisEntity } from 'src/diagnosis/entities/diagnosis.entity';
 import { DrugEntity } from 'src/drug/entities/drug.entity';
-import { MedicalRecordEntity } from 'src/medicalrecord/entities/medicalrecord.entity';
+import { PatientEntity } from 'src/patient/entity/patient.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -28,20 +24,17 @@ export class EntryEntity {
   @IsInt()
   healthStatus: number;
 
+  @Column()
+  diagnosis: string;
+
   @IsString()
   @Column()
   comments: string;
 
-  @ManyToOne(
-    () => MedicalRecordEntity,
-    (medicalRecord) => medicalRecord.entries,
-  )
-  medicalRecord: MedicalRecordEntity;
+  @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord)
+  patient: PatientEntity;
 
   @ManyToMany(() => DrugEntity)
   @JoinTable()
   drugs: DrugEntity[];
-
-  @OneToOne(() => DiagnosisEntity)
-  diagnosis: DiagnosisEntity;
 }

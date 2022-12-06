@@ -7,17 +7,10 @@ import {
   Delete,
   Put,
   ParseIntPipe,
-  UseGuards,
-  HttpException,
-  Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserProfileDto } from './dto/create-profile.dto';
-import { UpdateUserProfileDto } from './dto/update-profile.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
-import { HttpStatus } from '@nestjs/common/enums';
 import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -39,37 +32,6 @@ export class UsersController {
     return await this.usersService.createUser(createUserDto);
   }
 
-  //@UseGuards(JwtAuthGuard)
-  @Post('user/:id/profile')
-  @ApiCreatedResponse()
-  @ApiUnprocessableEntityResponse()
-  @ApiForbiddenResponse()
-  createUserProfile(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() createUserProfileDto: CreateUserProfileDto,
-  ) {
-    return this.usersService.createUserProfile(id, createUserProfileDto);
-  }
-  //@UseGuards(JwtAuthGuard)
-  @Put('user/:id/profile')
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  @ApiUnprocessableEntityResponse()
-  updateUserProfile(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserProfileDto: UpdateUserProfileDto,
-  ) {
-    return this.usersService.updateUserProfile(id, updateUserProfileDto);
-  }
-  //@UseGuards(JwtAuthGuard)
-  @Get('user/:id/profile')
-  @ApiOkResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  findUserProfile(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOneProfileById(id);
-  }
   //@UseGuards(JwtAuthGuard)
   @Get('users')
   @ApiOkResponse()

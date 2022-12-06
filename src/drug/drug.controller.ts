@@ -1,16 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { DrugService } from './drug.service';
-import { CreateDrugDto } from './dto/create-drug.dto';
-import { UpdateDrugDto } from './dto/update-drug.dto';
 
 @Controller('drug')
 export class DrugController {
   constructor(private readonly drugService: DrugService) {}
 
-  @Post()
-  create(@Body() createDrugDto: CreateDrugDto) {
-    return this.drugService.create(createDrugDto);
-  }
+  // @Post()
+  // create(@Body() createDrugDto: CreateDrugDto) {
+  //   return this.drugService.create(createDrugDto);
+  // }
 
   @Get()
   findAll() {
@@ -22,13 +20,13 @@ export class DrugController {
     return this.drugService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDrugDto: UpdateDrugDto) {
-    return this.drugService.update(+id, updateDrugDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateDrugDto: UpdateDrugDto) {
+  //   return this.drugService.update(+id, updateDrugDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.drugService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.drugService.remove(+id);
+  // }
 }
