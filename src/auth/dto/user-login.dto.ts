@@ -5,10 +5,11 @@ export class LoginForm {
     type: String,
     description: 'Existing user email',
   })
-  email: string;
+  readonly email: string;
+
   @ApiProperty({
     type: String,
     description: 'Existing user password',
   })
-  password: string;
+  readonly password: string;
 }

@@ -1,5 +1,7 @@
 import { DrugEntity } from 'src/drug/entities/drug.entity';
 import { EntryEntity } from 'src/entry/entities/entry.entity';
+import { EvolutionEntity } from 'src/evolution/entities/evolution.entity';
+
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 
@@ -20,7 +22,13 @@ export function ormConfig(): any {
     extra: {
       connectionLimit: parseInt(process.env.DATABASE_CONNECTION_LIMIT),
     },
-    entities: [UserEntity, PatientEntity, EntryEntity, DrugEntity],
+    entities: [
+      UserEntity,
+      PatientEntity,
+      EntryEntity,
+      DrugEntity,
+      EvolutionEntity,
+    ],
     migrations: ['dist/database/migrations/*.js'],
     subscribers: ['dist/observers/subscribers/*.subscriber.js'],
     cli: {

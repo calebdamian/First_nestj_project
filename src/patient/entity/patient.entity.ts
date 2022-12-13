@@ -1,4 +1,5 @@
 import { EntryEntity } from 'src/entry/entities/entry.entity';
+import { EvolutionEntity } from 'src/evolution/entities/evolution.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Entity,
@@ -6,6 +7,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 @Entity({ name: 'patient' })
@@ -37,4 +39,7 @@ export class PatientEntity {
 
   @OneToMany(() => EntryEntity, (entry) => entry.patient)
   medicalRecord: EntryEntity[];
+
+  @OneToMany(() => EvolutionEntity, (evolution) => evolution.patient)
+  evolution: EvolutionEntity;
 }

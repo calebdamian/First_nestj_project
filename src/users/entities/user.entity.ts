@@ -8,7 +8,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { PatientEntity } from 'src/patient/entity/patient.entity';
 
-@Entity('user')
+@Entity('medic')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;

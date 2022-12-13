@@ -33,7 +33,7 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { id } });
   }
 
-  findOneUserByUsername(email: string): Promise<UserEntity> {
+  findOneUserByEmail(email: string): Promise<UserEntity> {
     return this.usersRepository.findOneBy({ email });
   }
   async updateUser(id: number, updateUserDto: UpdateUserDto) {

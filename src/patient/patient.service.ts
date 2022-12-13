@@ -5,6 +5,8 @@ import { PatientEntity } from './entity/patient.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UpdatePatientDto } from './dto/update-patient.dto';
+import { CreateEntryDto } from 'src/entry/dto/create-entry.dto';
+import { EntryEntity } from 'src/entry/entities/entry.entity';
 
 @Injectable()
 export class PatientService {
@@ -13,10 +15,17 @@ export class PatientService {
     private patientRepository: Repository<PatientEntity>,
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    @InjectRepository(EntryEntity)
+    private entryRepository: Repository<EntryEntity>,
   ) {}
 
-  public async createPatient(id: number, createPatientDto: CreatePatientDto) {
-    const foundUser = await this.usersRepository.findOneBy({ id });
+  public async createPatient(
+    userEmail: string,
+    createPatientDto: CreatePatientDto,
+  ): Promise<PatientEntity> {
+    const foundUser = await this.usersRepository.findOneBy({
+      email: userEmail,
+    });
     //console.log(foundUser);
     if (!foundUser)
       throw new HttpException(
@@ -30,7 +39,45 @@ export class PatientService {
 
     //console.log(newPatient);
 
-    return this.patientRepository.save(newPatient);
+    return await this.patientRepository.save(newPatient);
+  }
+
+  async createEntry(
+    patientId: number,
+    //healthStatusId: number,
+    createEntryDto: CreateEntryDto,
+  ) {
+    const foundPatient = await this.patientRepository.findOneBy({
+      id: patientId,
+    });
+    if (!foundPatient) {
+      throw new HttpException(
+        'Patient not found. Cannot create entry.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const newEntry = this.entryRepository.create({
+      ...createEntryDto,
+      drugs: createEntryDto.drugsIds.map((drugId) => ({ id: drugId })),
+      patient: foundPatient,
+    });
+
+    return await this.entryRepository.save(newEntry);
+  }
+
+  async getPatientEntries(patientId: number) {
+    const foundPatient = await this.patientRepository.findOneBy({
+      id: patientId,
+    });
+    if (!foundPatient) {
+      throw new HttpException(
+        'Patient not found. Cannot get entries.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return await this.entryRepository.find({
+      where: { patient: { id: patientId } },
+    });
   }
 
   async updatePatient(id: number, updatePatientDto: UpdatePatientDto) {

@@ -11,7 +11,10 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
+import {
+  Param,
+  Req,
+} from '@nestjs/common/decorators/http/route-params.decorator';
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
 import {
   ApiCreatedResponse,
@@ -21,39 +24,74 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { request } from 'http';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+import { CreateEntryDto } from 'src/entry/dto/create-entry.dto';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PatientService } from './patient.service';
 
 @ApiTags('Patients')
 @UseGuards(JwtAuthGuard)
-@Controller()
+@Controller('patients')
 export class PatientController {
-  constructor(private patientService: PatientService) { }
-  @Post('/user/:id/patient')
+  constructor(private patientService: PatientService) {}
+  @Post()
   @ApiCreatedResponse()
   @ApiUnprocessableEntityResponse()
   @ApiForbiddenResponse()
   public async create(
-    @Param('id', ParseIntPipe) id: number,
+    @Req() request,
     @Body() createPatientDto: CreatePatientDto,
   ) {
-    return this.patientService.createPatient(id, createPatientDto);
+    const userEmail = request.user.email;
+    const patient = await this.patientService.createPatient(
+      userEmail,
+      createPatientDto,
+    );
+    return patient.id;
   }
 
-  @Get('/patients')
+  @Post(':id/entries')
+  @ApiCreatedResponse()
+  @ApiUnprocessableEntityResponse()
+  @ApiForbiddenResponse()
+  public async createEntry(
+    @Req() request,
+    @Param('id', ParseIntPipe) id: number,
+    // @Param('id', ParseIntPipe) healthStatusid: number,
+    @Body() createEntryDto: CreateEntryDto,
+  ) {
+    const entry = await this.patientService.createEntry(
+      id,
+      // healthStatusid,
+      createEntryDto,
+    );
+    return entry.id;
+  }
+
+  @Get(':id/entries')
+  @ApiCreatedResponse()
+  @ApiUnprocessableEntityResponse()
+  @ApiForbiddenResponse()
+  public async getEntries(
+    @Req() request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const entries = await this.patientService.getPatientEntries(id);
+    return entries;
+  }
+
+  @Get()
   @ApiOkResponse()
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()
   async findAllPatients(@Res() res) {
     const patients = await this.patientService.findAllPatients();
-    res.status(HttpStatus.OK).json({
-      patients,
-    });
+    res.status(HttpStatus.OK).json(patients);
   }
 
-  @Get('patient/card/:id-card')
+  @Get(':id-card')
   @ApiOkResponse()
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()
@@ -62,16 +100,16 @@ export class PatientController {
     return res.status(HttpStatus.OK).json({ patient });
   }
 
-  @Get('patient/:id')
+  @Get(':id')
   @ApiOkResponse()
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()
   async getPatientById(@Res() res, @Param('id') id) {
     const patient = await this.patientService.findOnePatientById(id);
-    return res.status(HttpStatus.OK).json({ patient });
+    return res.status(HttpStatus.OK).json(patient);
   }
 
-  @Delete('patient/:id')
+  @Delete(':id')
   @ApiOkResponse()
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()
@@ -84,7 +122,7 @@ export class PatientController {
     });
   }
 
-  @Put('patient/:id')
+  @Put(':id')
   @ApiOkResponse()
   @ApiForbiddenResponse()
   @ApiNotFoundResponse()

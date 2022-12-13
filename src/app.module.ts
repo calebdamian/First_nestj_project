@@ -7,8 +7,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './database/config/orm.config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { EntryModule } from './entry/entry.module';
 import { DrugModule } from './drug/drug.module';
+import { EvolutionModule } from './evolution/evolution.module';
+import { CoreEvolutionService } from './services/core-evolution/core-evolution.service';
+
 @Module({
   imports: [
     PatientModule,
@@ -18,10 +20,10 @@ import { DrugModule } from './drug/drug.module';
     TypeOrmModule.forRoot(ormConfig()),
     UsersModule,
     AuthModule,
-    EntryModule,
     DrugModule,
+    EvolutionModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [CoreEvolutionService],
 })
 export class AppModule {}

@@ -1,7 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import {
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { DrugService } from './drug.service';
 
-@Controller('drug')
+@Controller('drugs')
+@UseGuards(JwtAuthGuard)
 export class DrugController {
   constructor(private readonly drugService: DrugService) {}
 
@@ -11,11 +18,17 @@ export class DrugController {
   // }
 
   @Get()
-  findAll() {
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  async findAll(@Req() req) {
     return this.drugService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   findOne(@Param('id') id: string) {
     return this.drugService.findOne(+id);
   }

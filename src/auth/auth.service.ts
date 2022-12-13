@@ -10,13 +10,10 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async validateUserCredentials(
-    username: string,
-    password: string,
-  ): Promise<any> {
+  async validateUserCredentials(email: string, password: string): Promise<any> {
     //console.log('At AUTH.SERVICE file');
     //console.log(username, password);
-    const foundUser = await this.usersService.findOneUserByUsername(username);
+    const foundUser = await this.usersService.findOneUserByEmail(email);
     //console.log(user);
     if (!foundUser) return null;
     const isValidPass = await this.validatePassword(

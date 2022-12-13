@@ -5,9 +5,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -16,12 +18,16 @@ export class EntryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  @CreateDateColumn()
-  createDate: Date;
+  @Column({
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+    type: 'timestamp',
+  })
+  createdDate: Date;
 
+  // @OneToOne(() => HealthStatusEntity)
+  // @JoinColumn()
   @Column()
-  @IsInt()
   healthStatus: number;
 
   @Column()
@@ -34,7 +40,7 @@ export class EntryEntity {
   @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord)
   patient: PatientEntity;
 
-  @ManyToMany(() => DrugEntity)
+  @ManyToMany(() => DrugEntity, { eager: true })
   @JoinTable()
   drugs: DrugEntity[];
 }
