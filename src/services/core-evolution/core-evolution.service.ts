@@ -28,7 +28,7 @@ export class CoreEvolutionService {
     await this.patientService
       .getPatientEntries(patientId)
       .then((result: any[]) => {
-        aux = result.filter((entry: any) => );
+        //aux = result.filter((entry: any) => );
       });
 
     let aux2 = new Date(beginDate);

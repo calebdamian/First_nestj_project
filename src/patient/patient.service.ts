@@ -80,6 +80,11 @@ export class PatientService {
     });
   }
 
+  async getAllEntries() {
+    const entries = await this.entryRepository.find();
+    return entries;
+  }
+
   async updatePatient(id: number, updatePatientDto: UpdatePatientDto) {
     const foundPatient = await this.patientRepository.findOneBy({ id });
     if (!foundPatient) {

@@ -81,6 +81,14 @@ export class PatientController {
     const entries = await this.patientService.getPatientEntries(id);
     return entries;
   }
+  @Get('/entries')
+  @ApiCreatedResponse()
+  @ApiUnprocessableEntityResponse()
+  @ApiForbiddenResponse()
+  public async getAllEntries() {
+    const entries = await this.patientService.getAllEntries();
+    return entries;
+  }
 
   @Get()
   @ApiOkResponse()
