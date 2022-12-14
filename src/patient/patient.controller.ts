@@ -59,14 +59,9 @@ export class PatientController {
   public async createEntry(
     @Req() request,
     @Param('id', ParseIntPipe) id: number,
-    // @Param('id', ParseIntPipe) healthStatusid: number,
     @Body() createEntryDto: CreateEntryDto,
   ) {
-    const entry = await this.patientService.createEntry(
-      id,
-      // healthStatusid,
-      createEntryDto,
-    );
+    const entry = await this.patientService.createEntry(id, createEntryDto);
     return entry.id;
   }
 

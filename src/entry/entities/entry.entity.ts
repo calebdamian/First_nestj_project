@@ -37,7 +37,7 @@ export class EntryEntity {
   @Column()
   comments: string;
 
-  @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord)
+  @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord, { eager: true })
   patient: PatientEntity;
 
   @ManyToMany(() => DrugEntity, { eager: true })

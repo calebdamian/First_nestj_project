@@ -17,11 +17,6 @@ export class EvolutionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  //TODO: Agregar fecha de inicio y fin, diagnostico (esto llega por parametro del medico)
-  // TODO: Estado de salud inicial. Estado de salud actual.
-  //TODO: Estado de salud que diga si ha empeorado o mejorado pero en letras
-  //TODO: Relacion de evolucion a medicamentos M:M (medicamentos recomendados)
-
   @Column('date')
   beginDate: Date;
 

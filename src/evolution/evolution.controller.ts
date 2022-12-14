@@ -15,8 +15,8 @@ export class EvolutionInterface {
   constructor(
     public patientId: number,
     public beginDate: Date,
-    public endDate: Date,
     public diagnosis: string,
+    public endDate?: Date,
   ) {}
 }
 
@@ -26,9 +26,8 @@ export class EvolutionController {
 
   @Post()
   createEvolution(@Body() evolutionParam: EvolutionInterface) {
-    //return this.evolutionService.create(createEvolutionDto);
-    this.evolutionService.create(evolutionParam);
-    return null;
+    const evolution = this.evolutionService.create(evolutionParam);
+    return evolution;
   }
 
   @Get()
