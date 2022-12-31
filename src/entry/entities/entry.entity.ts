@@ -25,8 +25,6 @@ export class EntryEntity {
   })
   createdDate: Date;
 
-  // @OneToOne(() => HealthStatusEntity)
-  // @JoinColumn()
   @Column()
   healthStatus: number;
 
@@ -37,7 +35,9 @@ export class EntryEntity {
   @Column()
   comments: string;
 
-  @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord, { eager: true })
+  @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord, {
+    eager: true,
+  })
   patient: PatientEntity;
 
   @ManyToMany(() => DrugEntity, { eager: true })

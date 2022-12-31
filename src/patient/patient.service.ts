@@ -42,11 +42,7 @@ export class PatientService {
     return await this.patientRepository.save(newPatient);
   }
 
-  async createEntry(
-    patientId: number,
-    //healthStatusId: number,
-    createEntryDto: CreateEntryDto,
-  ) {
+  async createEntry(patientId: number, createEntryDto: CreateEntryDto) {
     const foundPatient = await this.patientRepository.findOneBy({
       id: patientId,
     });

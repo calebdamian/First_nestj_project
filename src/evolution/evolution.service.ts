@@ -19,43 +19,79 @@ export class EvolutionService {
     private patientRepository: Repository<PatientEntity>,
   ) {}
 
-  async create(createEvolutionInt: EvolutionInterface) {
+  async createEvolution(createEvolutionInt: EvolutionInterface) {
     let createEvolDto;
-    
+
     const foundPatient = await this.patientRepository.findOneBy({
       id: createEvolutionInt.patientId,
     });
     if (!foundPatient) {
       throw new HttpException(
-        'Patient not found. Cannot create entry.',
+        'Patient not found. Cannot create evolution.',
         HttpStatus.BAD_REQUEST,
       );
     }
-      
-    await this.coreEvolutionService.getEvolution(createEvolutionInt).then(res => createEvolDto = res);
+
+    await this.coreEvolutionService
+      .getEvolution(createEvolutionInt)
+      .then((res) => (createEvolDto = res));
 
     const newEvol = this.evolutionRepository.create({
       ...createEvolDto,
-      recommendedDrugs: createEvolDto.recommendedDrugsIds.map((recommendedDrugsIds) => ({ id: recommendedDrugsIds })),
+      recommendedDrugs: createEvolDto.recommendedDrugsIds.map(
+        (recommendedDrugsIds) => ({ id: recommendedDrugsIds }),
+      ),
       patient: foundPatient,
     });
 
     return await this.evolutionRepository.save(newEvol);
   }
 
-  findAll() {
-    return `This action returns all evolution`;
+  async findAll() {
+    const evolutions = await this.evolutionRepository.find();
+    return evolutions;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} evolution`;
+  async findEvolutionsByPatientId(patientId: number) {
+    let allEvolutions = this.findAll();
+
+    let auxArray: EvolutionEntity[] = [];
+
+    await allEvolutions.then((result: EvolutionEntity[]) => {
+      auxArray = result.filter(
+        (res: EvolutionEntity) => res.patient.id == patientId,
+      );
+    });
+
+    return auxArray;
+  }
+
+  async findCoreEvolutions(
+    patientId: number,
+    beginDate: Date,
+    endDate: Date,
+    diagnosis: string,
+  ) {
+    let allEvolutions = this.findAll();
+    let auxArray: EvolutionEntity[] = [];
+    await allEvolutions.then((result: EvolutionEntity[]) => {
+      auxArray = result.filter(
+        (res: EvolutionEntity) =>
+          res.patient.id == patientId &&
+          res.beginDate == beginDate &&
+          res.endDate == endDate &&
+          res.diagnosis == diagnosis,
+      );
+    });
+
+    return auxArray;
   }
 
   update(id: number, updateEvolutionDto: UpdateEvolutionDto) {
     return `This action updates a #${id} evolution`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} evolution`;
+  async remove(id: number) {
+    return await this.evolutionRepository.delete({ id });
   }
 }

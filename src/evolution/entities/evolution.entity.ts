@@ -7,8 +7,6 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -35,11 +33,11 @@ export class EvolutionEntity {
   @Column()
   stringHealthStatus: string;
 
-  @ManyToMany(() => DrugEntity)
+  @ManyToMany(() => DrugEntity, { eager: true })
   @JoinTable()
   recommendedDrugs: DrugEntity[];
 
-  @ManyToOne(() => PatientEntity)
+  @ManyToOne(() => PatientEntity, { eager: true })
   @JoinColumn()
   patient: PatientEntity;
 }

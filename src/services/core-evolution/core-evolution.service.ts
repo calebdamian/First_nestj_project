@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { resolve } from 'path';
 import { CreateEvolutionDto } from 'src/evolution/dto/create-evolution.dto';
 import { EvolutionInterface } from 'src/evolution/evolution.controller';
 import { PatientService } from 'src/patient/patient.service';
@@ -11,13 +10,14 @@ export class CoreEvolutionService {
   private patientEntryList: any[] = [];
   private patientDrugsList: any[] = [];
   private posibleRecDrugsList: any[] = [];
-  private recomendsDrugs: any[] = [];
+  private recommendedDrugs: any[] = [];
 
   async getEvolution(evolParam: EvolutionInterface) {
     if (evolParam.endDate === undefined) {
+      // const currentDate = new Date().toISOString().slice(0, 10);
+      // console.log(currentDate);
       evolParam.endDate = new Date();
     }
-
     await this.loadData(evolParam);
 
     return this.createEvolDto;
@@ -30,8 +30,11 @@ export class CoreEvolutionService {
       evolParam.patientId,
       evolParam.diagnosis,
     );
-    await this.getAllEntries(evolParam.patientId, evolParam.diagnosis);
-    this.getRecomendDrugs();
+    await this.getBetterHealthStatusEntries(
+      evolParam.patientId,
+      evolParam.diagnosis,
+    );
+    this.getRecommendedDrugs();
 
     this.createEvolDto = {
       beginDate: evolParam.beginDate,
@@ -39,9 +42,9 @@ export class CoreEvolutionService {
       diagnosis: evolParam.diagnosis,
       patientId: evolParam.patientId,
       initialHealthStatus: this.getinitialHealthStatus(),
-      currentHealthStatus: this.getcurrentHealthStatus(),
+      currentHealthStatus: this.getCurrentHealthStatus(),
       stringHealthStatus: this.getEvolutionHealthStatus(),
-      recommendedDrugsIds: this.recomendsDrugs,
+      recommendedDrugsIds: this.recommendedDrugs,
     };
   }
 
@@ -56,30 +59,28 @@ export class CoreEvolutionService {
 
     await this.patientService
       .getPatientEntries(patientId)
-      .then((result: any[]) => {
+      .then((result: any) => {
         this.patientEntryList = result.filter(
           (entry: any) =>
             entry.createdDate.getTime() >= beginDate.getTime() &&
             entry.createdDate.getTime() <= endDate.getTime() &&
             entry.diagnosis === diagnosis,
         );
-
         this.patientEntryList.sort(
           (entry1: any, entry2: any) => entry1.createdDate - entry2.createdDate,
         );
       });
 
     this.patientEntryList.forEach((entry: any) => {
-      entry.drugs.forEach((drugs: any) => {
+      entry.drugs.forEach((drug: any) => {
         if (this.patientDrugsList.length === 0) {
-          this.patientDrugsList.push(drugs);
+          this.patientDrugsList.push(drug);
         } else {
-          if (
-            this.patientDrugsList.find(
-              (drugPar: any) => drugs.id === drugPar.id,
-            ) === undefined
-          ) {
-            this.patientDrugsList.push(drugs);
+          const f = this.patientDrugsList.find(
+            (element: any) => drug.id === element.id,
+          );
+          if (f === undefined) {
+            this.patientDrugsList.push(drug);
           }
         }
       });
@@ -90,66 +91,65 @@ export class CoreEvolutionService {
     return this.patientEntryList[0].healthStatus;
   }
 
-  private getcurrentHealthStatus(): number {
+  private getCurrentHealthStatus(): number {
     return this.patientEntryList[this.patientEntryList.length - 1].healthStatus;
   }
 
   private getEvolutionHealthStatus(): string {
-    if (this.getcurrentHealthStatus() === this.getinitialHealthStatus()) {
+    if (this.getCurrentHealthStatus() === this.getinitialHealthStatus()) {
       return 'No improvement';
-    } else if (this.getcurrentHealthStatus() > this.getinitialHealthStatus()) {
-      return 'There is Improvement';
+    } else if (this.getCurrentHealthStatus() > this.getinitialHealthStatus()) {
+      return 'There is improvement';
     } else {
       return 'Has worsened';
     }
   }
 
-  private async getAllEntries(patientId: number, diagnosis: string) {
-    let arrAux = [];
+  private async getBetterHealthStatusEntries(
+    patientId: number,
+    diagnosis: string,
+  ) {
+    let betterHealthStatusPatients = [];
     await this.patientService.getAllEntries().then((res: any[]) => {
-      arrAux = res.filter(
+      betterHealthStatusPatients = res.filter(
         (entry) =>
           entry.patient.id !== patientId &&
           entry.diagnosis === diagnosis &&
-          entry.healthStatus > this.getcurrentHealthStatus(),
+          entry.healthStatus > this.getCurrentHealthStatus(),
       );
     });
 
-    arrAux.forEach((entry: any) => {
-      entry.drugs.forEach((drugs: any) => {
+    betterHealthStatusPatients.forEach((entry: any) => {
+      entry.drugs.forEach((drug: any) => {
         if (this.posibleRecDrugsList.length === 0) {
-          this.posibleRecDrugsList.push(drugs);
+          this.posibleRecDrugsList.push(drug);
         } else {
-          if (
-            this.posibleRecDrugsList.find(
-              (drugPar: any) => drugs.id === drugPar.id,
-            ) === undefined
-          ) {
-            this.posibleRecDrugsList.push(drugs);
+          const f = this.posibleRecDrugsList.find(
+            (element: any) => drug.id === element.id,
+          );
+          if (f === undefined) {
+            this.posibleRecDrugsList.push(drug);
           }
         }
       });
     });
   }
 
-  private getRecomendDrugs() {
+  private getRecommendedDrugs() {
     this.posibleRecDrugsList.forEach((drug: any) => {
-      this.validateDrug(drug);
+      this.validateDuplicatedDrugs(drug);
     });
   }
 
-  private validateDrug(drugPar: any) {
-    if (
-      this.recomendsDrugs.length === 0 &&
-      this.patientDrugsList.find((drug: any) => drug.id === drugPar.id) ===
-        undefined
-    ) {
-      this.recomendsDrugs.push(drugPar);
-    } else if (
-      this.patientDrugsList.find((drug: any) => drugPar.id === drug.id) ===
-      undefined
-    ) {
-      this.recomendsDrugs.push(drugPar);
+  private validateDuplicatedDrugs(drugPar: any) {
+    const f = this.patientDrugsList.find((drug: any) => drug.id === drugPar.id);
+    const f2 = this.patientDrugsList.find(
+      (drug: any) => drugPar.id === drug.id,
+    );
+    if (this.recommendedDrugs.length === 0 && f === undefined) {
+      this.recommendedDrugs.push(drugPar);
+    } else if (f2 === undefined) {
+      this.recommendedDrugs.push(drugPar);
     }
   }
 }
