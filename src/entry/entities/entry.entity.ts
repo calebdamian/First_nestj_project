@@ -37,6 +37,7 @@ export class EntryEntity {
 
   @ManyToOne(() => PatientEntity, (patient) => patient.medicalRecord, {
     eager: true,
+    onDelete: 'CASCADE',
   })
   patient: PatientEntity;
 

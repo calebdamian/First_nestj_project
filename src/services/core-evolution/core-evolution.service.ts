@@ -14,8 +14,6 @@ export class CoreEvolutionService {
 
   async getEvolution(evolParam: EvolutionInterface) {
     if (evolParam.endDate === undefined) {
-      // const currentDate = new Date().toISOString().slice(0, 10);
-      // console.log(currentDate);
       evolParam.endDate = new Date();
     }
     await this.loadData(evolParam);

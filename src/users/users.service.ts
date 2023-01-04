@@ -12,14 +12,8 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
   async createUser(createUserDto: CreateUserDto) {
-    const usersFound = await this.usersRepository.find();
+    //const usersFound = await this.usersRepository.find();
 
-    if (usersFound.length > 0) {
-      return new HttpException(
-        'User already created',
-        HttpStatus.NOT_ACCEPTABLE,
-      );
-    }
     const newUser = this.usersRepository.create(createUserDto);
 
     return await this.usersRepository.save(newUser);

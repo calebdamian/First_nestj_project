@@ -33,11 +33,17 @@ export class EvolutionEntity {
   @Column()
   stringHealthStatus: string;
 
-  @ManyToMany(() => DrugEntity, { eager: true })
+  @ManyToMany(() => DrugEntity, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   recommendedDrugs: DrugEntity[];
 
-  @ManyToOne(() => PatientEntity, { eager: true })
+  @ManyToOne(() => PatientEntity, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   patient: PatientEntity;
 }

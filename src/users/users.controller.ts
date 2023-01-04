@@ -7,6 +7,8 @@ import {
   Delete,
   Put,
   ParseIntPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,6 +31,13 @@ export class UsersController {
   @ApiUnprocessableEntityResponse()
   @ApiForbiddenResponse()
   async create(@Body() createUserDto: CreateUserDto) {
+    const usersFound = (await this.usersService.findAllUsers()).length;
+    if (usersFound > 0) {
+      return new HttpException(
+        'User already created',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
     return await this.usersService.createUser(createUserDto);
   }
 

@@ -33,13 +33,16 @@ export class PatientEntity {
   @Column()
   email: string;
 
-  // Doctor
   @ManyToOne(() => UserEntity, (user) => user.patients)
   user: UserEntity;
 
-  @OneToMany(() => EntryEntity, (entry) => entry.patient)
+  @OneToMany(() => EntryEntity, (entry) => entry.patient, {
+    onDelete: 'CASCADE',
+  })
   medicalRecord: EntryEntity[];
 
-  @OneToMany(() => EvolutionEntity, (evolution) => evolution.patient)
+  @OneToMany(() => EvolutionEntity, (evolution) => evolution.patient, {
+    onDelete: 'CASCADE',
+  })
   evolution: EvolutionEntity;
 }

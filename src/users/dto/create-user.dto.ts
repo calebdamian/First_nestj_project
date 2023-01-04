@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsEmail,
   IsNotEmpty,
   IsString,
   Length,
@@ -9,13 +10,13 @@ import {
 
 export class CreateUserDto {
   @IsNotEmpty()
-  @IsString()
+  @IsEmail()
   @MaxLength(15)
   @ApiProperty({
     type: String,
-    description: 'Users username',
+    description: 'Users email',
   })
-  username: string;
+  email: string;
   @IsNotEmpty()
   @IsString()
   @Length(8, 24)
@@ -29,16 +30,6 @@ export class CreateUserDto {
   })
   password: string;
 
-  @IsNotEmpty()
-  @Length(8, 24)
-  @IsString()
-  @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
-    message:
-      'Password should have 1 upper case, low case letter along with a number and special character.',
-  })
-  @ApiProperty({
-    type: String,
-    description: 'Users confirmed password',
-  })
-  confirm_pass: string;
+  lastName: string;
+  firstName: string;
 }
