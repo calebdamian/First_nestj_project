@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEvolutionDto } from 'src/evolution/dto/create-evolution.dto';
 import { EvolutionInterface } from 'src/evolution/evolution.controller';
+import { EvolutionService } from 'src/evolution/evolution.service';
 import { PatientService } from 'src/patient/patient.service';
 
 @Injectable()
 export class CoreEvolutionService {
   constructor(private readonly patientService: PatientService) {}
+
   private createEvolDto: CreateEvolutionDto;
   private patientEntryList: any[] = [];
   private patientDrugsList: any[] = [];
@@ -69,6 +71,12 @@ export class CoreEvolutionService {
         );
       });
 
+    setTimeout(() => {
+      if (this.patientEntryList.length === 0) {
+        throw new Error('La lista de entradas del paciente está vacía');
+      }
+    }, 500);
+
     this.patientEntryList.forEach((entry: any) => {
       entry.drugs.forEach((drug: any) => {
         if (this.patientDrugsList.length === 0) {
@@ -95,11 +103,11 @@ export class CoreEvolutionService {
 
   private getEvolutionHealthStatus(): string {
     if (this.getCurrentHealthStatus() === this.getinitialHealthStatus()) {
-      return 'No improvement';
+      return 'No ha mejorado';
     } else if (this.getCurrentHealthStatus() > this.getinitialHealthStatus()) {
-      return 'There is improvement';
+      return 'Ha mejorado';
     } else {
-      return 'Has worsened';
+      return 'Ha empeorado';
     }
   }
 
@@ -134,6 +142,9 @@ export class CoreEvolutionService {
   }
 
   private getRecommendedDrugs() {
+    if (this.posibleRecDrugsList.length === 0) {
+      throw new Error('Parameter is not a number!');
+    }
     this.posibleRecDrugsList.forEach((drug: any) => {
       this.validateDuplicatedDrugs(drug);
     });

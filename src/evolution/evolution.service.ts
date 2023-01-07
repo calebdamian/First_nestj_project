@@ -20,31 +20,35 @@ export class EvolutionService {
   ) {}
 
   async createEvolution(createEvolutionInt: EvolutionInterface) {
-    let createEvolDto;
+    try {
+      const foundPatient = await this.patientRepository.findOneBy({
+        id: createEvolutionInt.patientId,
+      });
+      if (!foundPatient) {
+        throw new HttpException(
+          'Patient not found. Cannot create evolution.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
 
-    const foundPatient = await this.patientRepository.findOneBy({
-      id: createEvolutionInt.patientId,
-    });
-    if (!foundPatient) {
-      throw new HttpException(
-        'Patient not found. Cannot create evolution.',
-        HttpStatus.BAD_REQUEST,
-      );
+      let createEvolDto;
+
+      await this.coreEvolutionService
+        .getEvolution(createEvolutionInt)
+        .then((res) => (createEvolDto = res));
+
+      const newEvol = this.evolutionRepository.create({
+        ...createEvolDto,
+        recommendedDrugs: createEvolDto.recommendedDrugsIds.map(
+          (recommendedDrugsIds) => ({ id: recommendedDrugsIds }),
+        ),
+        patient: foundPatient,
+      });
+
+      return await this.evolutionRepository.save(newEvol);
+    } catch (error) {
+      throw new HttpException('No existe evoluciones', HttpStatus.BAD_REQUEST);
     }
-
-    await this.coreEvolutionService
-      .getEvolution(createEvolutionInt)
-      .then((res) => (createEvolDto = res));
-
-    const newEvol = this.evolutionRepository.create({
-      ...createEvolDto,
-      recommendedDrugs: createEvolDto.recommendedDrugsIds.map(
-        (recommendedDrugsIds) => ({ id: recommendedDrugsIds }),
-      ),
-      patient: foundPatient,
-    });
-
-    return await this.evolutionRepository.save(newEvol);
   }
 
   async findAll() {
@@ -93,5 +97,20 @@ export class EvolutionService {
 
   async remove(id: number) {
     return await this.evolutionRepository.delete({ id });
+  }
+  // reporte de todas las evoluciones de los pacientes
+  // rango entre los estados de salud
+  async report(initialHealthStatus: number, currentHealthStatus: number) {
+    let allEvolutions = this.findAll();
+    let auxArray: EvolutionEntity[] = [];
+    await allEvolutions.then((result: EvolutionEntity[]) => {
+      auxArray = result.filter(
+        (res: EvolutionEntity) =>
+          res.currentHealthStatus >= initialHealthStatus &&
+          res.currentHealthStatus <= currentHealthStatus,
+      );
+    });
+
+    return auxArray;
   }
 }

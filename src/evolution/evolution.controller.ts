@@ -26,6 +26,10 @@ export interface CoreEvols {
   patientId: number;
   diagnosis: string;
 }
+export interface reportInterface {
+  initialHealthStatus: number;
+  currentHealthStatus: number;
+}
 
 @Controller('evolutions')
 export class EvolutionController {
@@ -83,5 +87,13 @@ export class EvolutionController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.evolutionService.remove(id);
+  }
+
+  @Post('/report')
+  getReport(@Body() params: reportInterface) {
+    return this.evolutionService.report(
+      params.initialHealthStatus,
+      params.currentHealthStatus,
+    );
   }
 }
